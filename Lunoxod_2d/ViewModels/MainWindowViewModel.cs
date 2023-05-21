@@ -3,11 +3,21 @@ using Lunoxod_2d;
 using Lunoxod_2d.Views;
 using Avalonia.Controls;
 using Avalonia;
+using System;
+using System.Linq;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Lunoxod_2d.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        //Constructor
+        public MainWindowViewModel()
+        {
+
+        }
+
         public string Greeting => "Welcome to Avalonia!";
 
         private double count = 100;
@@ -107,6 +117,40 @@ namespace Lunoxod_2d.ViewModels
         public double getScaleFromScaleMatrix()
         {
             return ScaleMatrix.M11;
+        }
+
+        private string path = "C:\\Users\\Xiaomi\\source\\repos\\Lunoxod_2d\\Lunoxod_2d\\Source";
+
+        public string Path
+        {
+            get => path;
+            set => this.RaiseAndSetIfChanged(ref path, value);
+        }
+
+        private string coordsFromFile = "";
+
+        public async Task Open()
+        {
+            var dialog = new OpenFileDialog();
+            //dialog.Directory = "..\\Lunoxod_2d";
+            string[] result = null;
+            dialog.Filters.Add(new FileDialogFilter() { Name = "Text", Extensions = { "txt" } });
+            result = await dialog.ShowAsync(new Window());
+            if (result != null)
+            {
+                coordsFromFile = File.ReadAllText(result.First());
+            }
+        }
+
+        public void Print()
+        {
+            System.Diagnostics.Debug.WriteLine(coordsFromFile);
+            System.Diagnostics.Debug.WriteLine(coordsFromFile.GetType());
+        }
+
+        public void setLunoxod()
+        {
+            Lunoxod = new Lunoxod(coordsFromFile);
         }
     }
 }

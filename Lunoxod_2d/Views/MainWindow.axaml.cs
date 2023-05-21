@@ -6,6 +6,7 @@ using Avalonia.Media;
 using Avalonia.Remote.Protocol.Input;
 using Avalonia.VisualTree;
 using Lunoxod_2d.ViewModels;
+using System.Threading.Tasks;
 
 namespace Lunoxod_2d.Views
 {
@@ -121,5 +122,7 @@ namespace Lunoxod_2d.Views
 
             base.OnPointerMoved(e);
         }
+
+        
     }
 }

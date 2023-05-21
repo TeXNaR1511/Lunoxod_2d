@@ -25,11 +25,7 @@ namespace Lunoxod_2d
             set => this.RaiseAndSetIfChanged(ref timeScale, value);
         }
 
-        //private string coordinates = "0,0 100,0 200,-26 300,39 400,-39 500,13 600,0 700,0, 750,-23, 800,-50 900,20 1000,-40 1100,-25";
-        //private string coordinates = "0,50 100,30 200,50 300,80 400,60 500,70 600,40 700,50 750,30 800,10 900,20 1000,40 1100,50";
-        //private string coordinates = "0,50 100,20 200,70 300,10 400,90 500,50 600,70 700,40 750,20 800,10 900,80 1000,10 1100,50 1200,20 1300,80 1400,50 1500,60 1600,30 1700,50";
-        //private string coordinates = "0,50 50,80 100,20 150,80 200,70 250,10 300,90 350,30 400,60 450,70 500,50 550,40 600,70 650,10 700,40 750,20 800,30 850,10 900,80 950,30 1000,10 1050,50 1100,20 1150,80 1200,50 1250,60 1300,30 1350,50 1400,70 1450,80 1500,60 1550,40 1600,30 1650,50 1700,50";
-        private string coordinates = "0,0 100,20 200,-26 300,39 400,-39 500,13 600,0 700,-10, 750,-23, 800,-50 900,-60 1000,-40 1050,-78 1200,-90 1300,-20 1400,50 1500,10 1600,70 1700,-30 1800,-10 1900,50 2000,10 2100,20 2200,90 2300,-80 2400,10 2500,-20, 2600,-90 2700,10 2800,-10 2900,20 3000,-50 3100,95 3200,-65 3300,-40";
+        private string coordinates = "";
 
         private List<Point> surfaceUnderWheel = new List<Point>();
 
@@ -165,9 +161,16 @@ namespace Lunoxod_2d
 
         private TimeSpan timeShift = TimeSpan.Zero;
 
-        //Constructor
+        //Constructors
+
         public Lunoxod()
         {
+            //nothing
+        }
+
+        public Lunoxod(string coord)
+        {
+            coordinates = coord;
             //startShow();
             SurfaceUnderWheel = createListOfPointsFromString(coordinates);
             Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel);
