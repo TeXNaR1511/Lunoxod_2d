@@ -1,0 +1,207 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Lunoxod_2d.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
+        x:Class="Lunoxod_2d.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Lunoxod_2d"
+		xmlns:local="clr-namespace:Lunoxod_2d.Converter">
+
+	<Window.Resources>
+		<local:Converter x:Key="myConverter"/>
+	</Window.Resources>
+	
+	<Window.Styles>
+		<Style Selector="Rectangle.exp1">
+			<Style.Animations>
+				<Animation Duration="0:0:1" 
+						   Delay="0:0:0" 
+						   IterationCount="0"
+						   Easing="BackEaseIn">
+					<KeyFrame Cue="0%">
+						<Setter Property="RotateTransform.Angle" Value="0.0"/>
+						<Setter Property="Canvas.Top" Value="100"/>
+						<Setter Property="Canvas.Left" Value="100"/>
+						
+						<!--<Setter Property="Opacity" Value="0.0"/>-->
+					</KeyFrame>
+					<KeyFrame Cue="50%">
+						<!--<Setter Property="Opacity" Value="1.0"/>-->
+						<Setter Property="Canvas.Top" Value="50"/>
+						<Setter Property="Canvas.Left" Value="50"/>
+					</KeyFrame>
+					<KeyFrame Cue="100%">
+						<Setter Property="RotateTransform.Angle" Value="90.0"/>
+						<!--<Setter Property="Opacity" Value="0.0"/>-->
+						<Setter Property="Canvas.Top" Value="100"/>
+						<Setter Property="Canvas.Left" Value="100"/>
+					</KeyFrame>
+				</Animation>
+			</Style.Animations>
+		</Style>
+		
+	</Window.Styles>
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+	
+	<DockPanel x:Name="dock_panel">
+		<Grid ShowGridLines="False">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="5*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="3*"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<Border Grid.Column="0" Grid.Row="0" 
+				Margin="2"
+				Background="AliceBlue"
+				BorderBrush="Black"
+				BorderThickness="3"
+				CornerRadius="4"
+				Padding="4">
+				<Canvas Background="Transparent" x:Name="CanvasImplant" ClipToBounds="True" PointerWheelChanged="OnPointerWheelChanged" PointerPressed="OnPointerPressed" PointerMoved="OnPointerMoved" PointerReleased="OnPointerReleased">
+					
+					<Canvas>
+						<Canvas.RenderTransform>
+							<TransformGroup>
+								<TranslateTransform X="{Binding CanvasPosition.X}" Y="{Binding CanvasPosition.Y}"/>
+								<MatrixTransform Matrix="{Binding ScaleMatrix}"/>
+							</TransformGroup>
+						</Canvas.RenderTransform>
+
+						
+						<!--
+						<Canvas.Clip>
+							<RectangleGeometry Rect="0,0,10000,10000"/>
+						</Canvas.Clip>
+						-->
+						<!--
+						<Canvas.RenderTransform>
+							<ScaleTransform ScaleX="{Binding CanvasScale}" ScaleY="{Binding CanvasScale}"/>
+						</Canvas.RenderTransform>
+						-->
+						<!--
+						<TextBlock Text="kekw"></TextBlock>
+
+						<Ellipse Stroke="Green" StrokeThickness="2" Width="50" Height="100" Canvas.Left="100" Canvas.Top="200">
+							<Ellipse.RenderTransform>
+								<RotateTransform Angle="{Binding Lunoxod.ElapsedTime.TotalMilliseconds, Converter={StaticResource myConverter}, ConverterParameter=0|0.3|0|0|0|0|0}"/>
+							</Ellipse.RenderTransform>
+						</Ellipse>
+					
+						<Rectangle Height="100" Width="100" Classes="exp1" Fill="Red" Canvas.Top="60" Canvas.Left="60" />
+					
+						<Ellipse Canvas.Left="{Binding Lunoxod.ElapsedTime.TotalMilliseconds, Converter={StaticResource myConverter}, ConverterParameter=0|0|700|100|0.002|0|0}" Canvas.Top="{Binding Lunoxod.ElapsedTime.TotalMilliseconds, Converter={StaticResource myConverter}, ConverterParameter=0|0|200|0|0|100|0.002}" Fill="DarkBlue" Width="50" Height="50"/>
+						-->
+
+						<Polyline Points="{Binding Lunoxod.SurfaceUnderWheel}" Stroke="Brown" StrokeThickness="3" Canvas.Left="{Binding Lunoxod.SurfaceInitX}" Canvas.Top="{Binding Lunoxod.SurfaceInitY}">
+							<Polyline.RenderTransform>
+								<ScaleTransform ScaleX="1" ScaleY="-1"></ScaleTransform>
+							</Polyline.RenderTransform>
+						</Polyline>
+
+						<Polyline Points="{Binding Lunoxod.Body}" Stroke="Blue" StrokeThickness="7	"
+								  Canvas.Left="0" Canvas.Top="0">
+							<Polyline.RenderTransform>
+								<ScaleTransform ScaleX="1" ScaleY="-1"></ScaleTransform>
+							</Polyline.RenderTransform>
+						</Polyline>
+
+						<!--<Path Fill="Orange" Data="M 0,0 c 0,0 50,0 50,-50 c 0,0 50,0 50,50 h -50 v 50 l -50,-50 Z" Canvas.Left="30" Canvas.Top="250"/>-->
+
+
+						<Ellipse Stroke="Magenta" StrokeThickness="3" Width="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}" Height="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}"
+								 Canvas.Left="{Binding Lunoxod.FirstWheelX}" Canvas.Top="{Binding Lunoxod.FirstWheelY, Converter={StaticResource myConverter}, ConverterParameter=0|-1|0|0|0|0|0}">
+							<Ellipse.RenderTransform>
+								<ScaleTransform ScaleX="1" ScaleY="1"></ScaleTransform>
+							</Ellipse.RenderTransform>
+						</Ellipse>
+
+						<Ellipse Stroke="Red" StrokeThickness="3" Width="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}" Height="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}"
+								 Canvas.Left="{Binding Lunoxod.SecondWheelX}" Canvas.Top="{Binding Lunoxod.SecondWheelY, Converter={StaticResource myConverter}, ConverterParameter=0|-1|0|0|0|0|0}">
+							<Ellipse.RenderTransform>
+								<ScaleTransform ScaleX="1" ScaleY="1"></ScaleTransform>
+							</Ellipse.RenderTransform>
+						</Ellipse>
+
+					</Canvas>
+				</Canvas>
+			</Border>
+			<Grid ShowGridLines="False" Grid.Column="0" Grid.Row="1">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<Button Command="{Binding Lunoxod.timerStartStop}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="{Binding Lunoxod.ButtonName}" Grid.Column="0" Grid.Row="0"></Button>
+				<Button Command="{Binding Lunoxod.timerReset}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Reset" Grid.Column="0" Grid.Row="1"></Button>
+				<Button Command="{Binding Lunoxod.printTimerElapsed}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Print" Grid.Column="0" Grid.Row="2"></Button>
+				<TextBlock FontSize="30" Width="300" TextAlignment="Left" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0" Text="{Binding Lunoxod.ElapsedTime}"></TextBlock>
+			</Grid>
+			<Grid ShowGridLines="False" Grid.Column="1" Grid.Row="0">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<TextBlock Text="Time Scale" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0"/>
+				
+				<TextBox Text="{Binding Lunoxod.TimeScale}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1"/>
+				
+				<TextBlock Text="Radius Wheel" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2"/>
+				
+				<TextBox Text="{Binding Lunoxod.RadiusWheel}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="3"/>
+				
+				<TextBlock Text="First Wheel Init" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="4"/>
+				
+				<TextBox Text="{Binding Lunoxod.FirstWheelInit}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="5"/>
+				
+				<TextBlock Text="Second Wheel Init" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="6"/>
+				
+				<TextBox Text="{Binding Lunoxod.SecondWheelInit}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="7"/>
+				
+				<TextBlock Text="Initial Shift X" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="8"/>
+				
+				<TextBox Text="{Binding Lunoxod.InitialShiftX}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="9"/>
+				
+				<TextBlock Text="Initial Shift Y" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="10"/>
+				
+				<TextBox Text="{Binding Lunoxod.InitialShiftY}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="11"/>
+			</Grid>
+			
+			<Grid ShowGridLines="False" Grid.Column="1" Grid.Row="1">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<TextBlock Text="Obstacle" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0"></TextBlock>
+				<TextBlock Foreground="{Binding Lunoxod.ColorWarning}" FontSize="20" Text="{Binding Lunoxod.Warning}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1"></TextBlock>
+			</Grid>
+			<!--<TextBlock Text="{Binding MouseWheelPressed}" Grid.Column="1" Grid.Row="1"/>-->
+			
+		</Grid>
+	</DockPanel>
+    
+</Window>
