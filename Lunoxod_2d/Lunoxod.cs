@@ -17,7 +17,7 @@ namespace Lunoxod_2d
     public class Lunoxod : ViewModelBase
     {
       
-        private double timeScale = 10.0;
+        private double timeScale = 0.1;
 
         public double TimeScale
         {
@@ -47,24 +47,6 @@ namespace Lunoxod_2d
         {
             get => elapsedTime;
             set => this.RaiseAndSetIfChanged(ref elapsedTime, value);
-        }
-
-        private double circle_R = 200.0;
-
-        private double circle_X;
-
-        public double Circle_X
-        {
-            get => circle_X;
-            set => this.RaiseAndSetIfChanged(ref circle_X, value);
-        }
-
-        private double circle_Y;
-
-        public double Circle_Y
-        {
-            get => circle_Y;
-            set => this.RaiseAndSetIfChanged(ref circle_Y, value);
         }
 
         DispatcherTimer distimer;
@@ -141,23 +123,7 @@ namespace Lunoxod_2d
             set => this.RaiseAndSetIfChanged(ref secondWheelInit, value);
         }
 
-        private double initialShiftX = 30.0;
-
-        public double InitialShiftX
-        {
-            get => initialShiftX;
-            set => this.RaiseAndSetIfChanged(ref initialShiftX, value);
-        }
-
-        private double initialShiftY = 100.0;
-
-        public double InitialShiftY
-        {
-            get => initialShiftY;
-            set => this.RaiseAndSetIfChanged(ref initialShiftY, value);
-        }
-
-        private double surfaceInitX;
+        private double surfaceInitX = 0.0;
 
         public double SurfaceInitX
         {
@@ -165,7 +131,7 @@ namespace Lunoxod_2d
             set => this.RaiseAndSetIfChanged(ref surfaceInitX, value);
         }
 
-        private double surfaceInitY;
+        private double surfaceInitY = 0.0;
 
         public double SurfaceInitY
         {
@@ -205,16 +171,14 @@ namespace Lunoxod_2d
             //startShow();
             SurfaceUnderWheel = createListOfPointsFromString(coordinates);
             Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel);
-            SurfaceInitX = initialShiftX;
-            SurfaceInitY = initialShiftY + 2 * RadiusWheel - getMaxYOnSurface(coordinates);
             //System.Diagnostics.Debug.WriteLine(SurfaceInitY);
-            distimerTick(timeScale);
+            distimerTick(TimeScale);
             //TimerCallback tm = new TimerCallback(setElapsedTime);
             //Timer timer = new Timer(tm, null, 0, 100);
             distimer = new DispatcherTimer() { Interval = new TimeSpan() };
             distimer.Tick += (s, e) =>
             {
-                distimerTick(timeScale);
+                distimerTick(TimeScale);
                 //ElapsedTime = timer.Elapsed;
                 //WheelX = ElapsedTime.TotalMilliseconds / 10;
                 //WheelY = Wheel.getYOfCenterByX(WheelX, Wheel.getCenterOfWheel());
@@ -274,7 +238,7 @@ namespace Lunoxod_2d
             //distimer.Start();
             distimer.Stop();
 
-            distimerTick(timeScale);
+            distimerTick(TimeScale);
             
             ButtonName = "Start";
             //ElapsedTime = TimeSpan.Zero;
@@ -305,22 +269,16 @@ namespace Lunoxod_2d
             ElapsedTime = timer.Elapsed;
 
             Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel);
-            SurfaceInitX = initialShiftX;
-            SurfaceInitY = initialShiftY + 2 * RadiusWheel - getMaxYOnSurface(coordinates);
 
-            FirstWheelX = firstWheelInit + ElapsedTime.TotalMilliseconds / timeScale;
+            FirstWheelX = firstWheelInit + ElapsedTime.TotalMilliseconds * timeScale;
             FirstWheelY = Wheel.getYOfCenterByX(FirstWheelX, Wheel.getCenterOfWheel());
             Point b = new Point(FirstWheelX, FirstWheelY);
-            FirstWheelX += initialShiftX;
-            FirstWheelY -= initialShiftY;
 
-            SecondWheelX = secondWheelInit + ElapsedTime.TotalMilliseconds / timeScale;
+            SecondWheelX = secondWheelInit + ElapsedTime.TotalMilliseconds * timeScale;
             SecondWheelY = Wheel.getYOfCenterByX(SecondWheelX, Wheel.getCenterOfWheel());
             Point a = new Point(SecondWheelX, SecondWheelY);
-            SecondWheelX += initialShiftX;
-            SecondWheelY -= initialShiftY;
 
-            Body = new List<Point> { new Point(SecondWheelX, SecondWheelY - 2 * RadiusWheel), new Point(FirstWheelX, FirstWheelY - 2 * RadiusWheel) };
+            Body = new List<Point> { new Point(SecondWheelX, SecondWheelY), new Point(FirstWheelX, FirstWheelY) };
 
             FirstWheelX -= RadiusWheel;
             FirstWheelY -= RadiusWheel;

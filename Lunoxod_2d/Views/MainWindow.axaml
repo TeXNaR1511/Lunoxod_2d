@@ -73,7 +73,9 @@
 					<Canvas>
 						<Canvas.RenderTransform>
 							<TransformGroup>
-								<TranslateTransform X="{Binding CanvasPosition.X}" Y="{Binding CanvasPosition.Y}"/>
+								<TranslateTransform X="{Binding CanvasPosition.X}" 
+													Y="{Binding CanvasPosition.Y}"
+								/>
 								<MatrixTransform Matrix="{Binding ScaleMatrix}"/>
 							</TransformGroup>
 						</Canvas.RenderTransform>
@@ -103,35 +105,38 @@
 						<Ellipse Canvas.Left="{Binding Lunoxod.ElapsedTime.TotalMilliseconds, Converter={StaticResource myConverter}, ConverterParameter=0|0|700|100|0.002|0|0}" Canvas.Top="{Binding Lunoxod.ElapsedTime.TotalMilliseconds, Converter={StaticResource myConverter}, ConverterParameter=0|0|200|0|0|100|0.002}" Fill="DarkBlue" Width="50" Height="50"/>
 						-->
 
-						<Polyline Points="{Binding Lunoxod.SurfaceUnderWheel}" Stroke="Brown" StrokeThickness="3" Canvas.Left="{Binding Lunoxod.SurfaceInitX}" Canvas.Top="{Binding Lunoxod.SurfaceInitY}">
-							<Polyline.RenderTransform>
-								<ScaleTransform ScaleX="1" ScaleY="-1"></ScaleTransform>
-							</Polyline.RenderTransform>
-						</Polyline>
+						<Polyline Points="{Binding Lunoxod.SurfaceUnderWheel}" 
+								  Stroke="Brown" 
+								  StrokeThickness="3" 
+								  Canvas.Left="{Binding Lunoxod.SurfaceInitX}" 
+								  Canvas.Top="{Binding Lunoxod.SurfaceInitY}"
+						/>
 
-						<Polyline Points="{Binding Lunoxod.Body}" Stroke="Blue" StrokeThickness="7	"
-								  Canvas.Left="0" Canvas.Top="0">
-							<Polyline.RenderTransform>
-								<ScaleTransform ScaleX="1" ScaleY="-1"></ScaleTransform>
-							</Polyline.RenderTransform>
-						</Polyline>
+						<Polyline Points="{Binding Lunoxod.Body}" 
+								  Stroke="Blue" 
+								  StrokeThickness="7"
+								  Canvas.Left="0" 
+								  Canvas.Top="0"
+						/>
 
 						<!--<Path Fill="Orange" Data="M 0,0 c 0,0 50,0 50,-50 c 0,0 50,0 50,50 h -50 v 50 l -50,-50 Z" Canvas.Left="30" Canvas.Top="250"/>-->
 
 
-						<Ellipse Stroke="Magenta" StrokeThickness="3" Width="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}" Height="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}"
-								 Canvas.Left="{Binding Lunoxod.FirstWheelX}" Canvas.Top="{Binding Lunoxod.FirstWheelY, Converter={StaticResource myConverter}, ConverterParameter=0|-1|0|0|0|0|0}">
-							<Ellipse.RenderTransform>
-								<ScaleTransform ScaleX="1" ScaleY="1"></ScaleTransform>
-							</Ellipse.RenderTransform>
-						</Ellipse>
+						<Ellipse Stroke="Magenta" 
+								 StrokeThickness="3" 
+								 Width="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}" 
+								 Height="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}"
+								 Canvas.Left="{Binding Lunoxod.FirstWheelX}" 
+								 Canvas.Top="{Binding Lunoxod.FirstWheelY}"
+						/>
 
-						<Ellipse Stroke="Red" StrokeThickness="3" Width="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}" Height="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}"
-								 Canvas.Left="{Binding Lunoxod.SecondWheelX}" Canvas.Top="{Binding Lunoxod.SecondWheelY, Converter={StaticResource myConverter}, ConverterParameter=0|-1|0|0|0|0|0}">
-							<Ellipse.RenderTransform>
-								<ScaleTransform ScaleX="1" ScaleY="1"></ScaleTransform>
-							</Ellipse.RenderTransform>
-						</Ellipse>
+						<Ellipse Stroke="Red" 
+								 StrokeThickness="3" 
+								 Width="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}" 
+								 Height="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}"
+								 Canvas.Left="{Binding Lunoxod.SecondWheelX}" 
+								 Canvas.Top="{Binding Lunoxod.SecondWheelY}"
+						/> 
 
 					</Canvas>
 				</Canvas>
@@ -161,10 +166,6 @@
 					<RowDefinition Height="*"/>
 					<RowDefinition Height="*"/>
 					<RowDefinition Height="*"/>
-					<RowDefinition Height="*"/>
-					<RowDefinition Height="*"/>
-					<RowDefinition Height="*"/>
-					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 				<TextBlock Text="Time Scale" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0"/>
 				
@@ -181,14 +182,6 @@
 				<TextBlock Text="Second Wheel Init" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="6"/>
 				
 				<TextBox Text="{Binding Lunoxod.SecondWheelInit}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="7"/>
-				
-				<TextBlock Text="Initial Shift X" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="8"/>
-				
-				<TextBox Text="{Binding Lunoxod.InitialShiftX}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="9"/>
-				
-				<TextBlock Text="Initial Shift Y" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="10"/>
-				
-				<TextBox Text="{Binding Lunoxod.InitialShiftY}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="11"/>
 			</Grid>
 			
 			<Grid ShowGridLines="False" Grid.Column="1" Grid.Row="1">

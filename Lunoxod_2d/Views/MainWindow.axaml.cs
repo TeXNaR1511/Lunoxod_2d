@@ -70,7 +70,7 @@ namespace Lunoxod_2d.Views
             Point b = e.GetPosition(this);
 
             //b.X - scale * b.X, b.Y - scale * b.Y this is how i microsoft dicumentation define center
-            Matrix a = new Matrix(scale, 0.0, 0.0, scale, b.X - scale * b.X, b.Y - scale * b.Y);
+            Matrix a = new Matrix(scale, 0.0, 0.0, -scale, b.X - scale * b.X, b.Y - scale * b.Y);
             //Matrix a = new Matrix(scale, 0, 0, scale, 300, 300);
             viewModel.setScaleMatrix(a);
 
@@ -114,7 +114,9 @@ namespace Lunoxod_2d.Views
             if (mouseWheelPressed)
             {
                 Avalonia.Point tempPosition = e.GetPosition(this);
-                viewModel.setCanvasPosition(currentPosition + (tempPosition - previousPosition) / viewModel.getScaleFromScaleMatrix());
+                double a = currentPosition.X + (tempPosition.X - previousPosition.X) / viewModel.getScaleFromScaleMatrix();
+                double b = currentPosition.Y - (tempPosition.Y - previousPosition.Y) / viewModel.getScaleFromScaleMatrix();
+                viewModel.setCanvasPosition(new Point(a, b));
             }
 
             base.OnPointerMoved(e);

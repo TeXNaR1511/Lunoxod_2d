@@ -73,7 +73,7 @@ namespace Lunoxod_2d.ViewModels
         //    MouseWheelPressed = value;
         //}
 
-        private Point canvasPosition = new Point(0, 0);
+        private Point canvasPosition = new Point(50, -200);
 
         public Point CanvasPosition
         {
@@ -91,7 +91,7 @@ namespace Lunoxod_2d.ViewModels
             CanvasPosition = value;
         }
 
-        private Matrix scaleMatrix = new Matrix(1.0, 0.0, 0.0, 1.0, 0, 0);
+        private Matrix scaleMatrix = new Matrix(1.0, 0.0, 0.0, -1.0, 0, 0);
 
         public Matrix ScaleMatrix
         {
