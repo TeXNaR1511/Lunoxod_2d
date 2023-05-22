@@ -158,13 +158,14 @@
 					<RowDefinition Height="*"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
-				<Button Command="{Binding Lunoxod.timerStartStop}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="{Binding Lunoxod.ButtonName}" Grid.Column="0" Grid.Row="0"></Button>
-				<Button Command="{Binding Lunoxod.timerReset}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Reset" Grid.Column="0" Grid.Row="1"></Button>
-				<Button Command="{Binding Print}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Print" Grid.Column="0" Grid.Row="2"></Button>
+				<Button Command="{Binding Lunoxod.timerStartStop}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="{Binding Lunoxod.ButtonName}" Grid.Column="0" Grid.Row="0"/>
+				<Button Command="{Binding Lunoxod.timerReset}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Reset" Grid.Column="0" Grid.Row="1"/>
+				<!--<Button Command="{Binding Print}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Print" Grid.Column="0" Grid.Row="2"></Button>-->
 				<TextBlock FontSize="30" Width="300" TextAlignment="Left" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0" Text="{Binding Lunoxod.ElapsedTime}"></TextBlock>
 			</Grid>
 			<Grid ShowGridLines="False" Grid.Column="1" Grid.Row="0">
 				<Grid.RowDefinitions>
+					<RowDefinition Height="*"/>
 					<RowDefinition Height="*"/>
 					<RowDefinition Height="*"/>
 					<RowDefinition Height="*"/>
@@ -192,9 +193,11 @@
 				
 				<TextBox Text="{Binding Lunoxod.SecondWheelInit}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="7"/>
 
-				<Button Content="Browse" Command="{Binding Open}" Grid.Row="8"/>
+				<Button Command="{Binding Lunoxod.resetParameters}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Reset Parameters" Grid.Row="8"/>
+
+				<Button Content="Browse" Command="{Binding Open}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="9"/>
 				
-				<Button Content="Set Lunoxod" Command="{Binding setLunoxod}" Grid.Row="9"/>
+				<Button Content="Set Lunoxod" Command="{Binding setLunoxod}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="10"/>
 			</Grid>
 			
 			<Grid ShowGridLines="False" Grid.Column="1" Grid.Row="1">

@@ -351,5 +351,13 @@ namespace Lunoxod_2d
             return false;
         }
 
+        public void resetParameters()
+        {
+            VelocityWheel = 1.0;
+            RadiusWheel = 30.0;
+            FirstWheelInit = 100.0;
+            SecondWheelInit = 0.0;
+        }
+
     }
 }
