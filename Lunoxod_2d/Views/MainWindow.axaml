@@ -176,9 +176,9 @@
 					<RowDefinition Height="*"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
-				<TextBlock Text="Time Scale" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0"/>
+				<TextBlock Text="Velocity" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0"/>
 				
-				<TextBox Text="{Binding Lunoxod.TimeScale}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1"/>
+				<TextBox Text="{Binding Lunoxod.VelocityWheel}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1"/>
 				
 				<TextBlock Text="Radius Wheel" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2"/>
 				

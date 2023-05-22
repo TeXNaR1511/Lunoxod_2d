@@ -17,12 +17,12 @@ namespace Lunoxod_2d
     public class Lunoxod : ViewModelBase
     {
       
-        private double timeScale = 0.1;
+        private double velocityWheel = 1.0;
 
-        public double TimeScale
+        public double VelocityWheel
         {
-            get => timeScale; 
-            set => this.RaiseAndSetIfChanged(ref timeScale, value);
+            get => velocityWheel; 
+            set => this.RaiseAndSetIfChanged(ref velocityWheel, value);
         }
 
         private string coordinates = "";
@@ -173,15 +173,21 @@ namespace Lunoxod_2d
             coordinates = coord;
             //startShow();
             SurfaceUnderWheel = createListOfPointsFromString(coordinates);
-            Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel);
+            //Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel);
+
+            //FirstWheelX = FirstWheelInit - RadiusWheel;
+            //SecondWheelX = SecondWheelInit - RadiusWheel;
+
+
+
             //System.Diagnostics.Debug.WriteLine(SurfaceInitY);
-            distimerTick(TimeScale);
+            initDistimerTick();
             //TimerCallback tm = new TimerCallback(setElapsedTime);
             //Timer timer = new Timer(tm, null, 0, 100);
             distimer = new DispatcherTimer() { Interval = new TimeSpan() };
             distimer.Tick += (s, e) =>
             {
-                distimerTick(TimeScale);
+                distimerTick();
                 //ElapsedTime = timer.Elapsed;
                 //WheelX = ElapsedTime.TotalMilliseconds / 10;
                 //WheelY = Wheel.getYOfCenterByX(WheelX, Wheel.getCenterOfWheel());
@@ -241,11 +247,12 @@ namespace Lunoxod_2d
             //distimer.Start();
             distimer.Stop();
 
-            distimerTick(TimeScale);
+            initDistimerTick();
             
             ButtonName = "Start";
             //ElapsedTime = TimeSpan.Zero;
-            //ElapsedTime.
+
+            
         }
 
         public TimeSpan getElapsedTime()
@@ -267,27 +274,43 @@ namespace Lunoxod_2d
             //System.Diagnostics.Debug.WriteLine(timer.Elapsed);
         }
 
-        public void distimerTick(double timeScale)
+        public void initDistimerTick()
         {
             ElapsedTime = timer.Elapsed;
 
             Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel);
 
-            FirstWheelX = firstWheelInit + ElapsedTime.TotalMilliseconds * timeScale;
-            FirstWheelY = Wheel.getYOfCenterByX(FirstWheelX, Wheel.getCenterOfWheel());
+            FirstWheelX = FirstWheelInit - RadiusWheel;
+            FirstWheelY = Wheel.getYOfCenterByX(FirstWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
             Point b = new Point(FirstWheelX, FirstWheelY);
 
-            SecondWheelX = secondWheelInit + ElapsedTime.TotalMilliseconds * timeScale;
-            SecondWheelY = Wheel.getYOfCenterByX(SecondWheelX, Wheel.getCenterOfWheel());
+            SecondWheelX = SecondWheelInit - RadiusWheel;
+            SecondWheelY = Wheel.getYOfCenterByX(SecondWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
             Point a = new Point(SecondWheelX, SecondWheelY);
 
-            Body = new List<Point> { new Point(SecondWheelX, SecondWheelY), new Point(FirstWheelX, FirstWheelY) };
+            Body = new List<Point> { new Point(SecondWheelX + RadiusWheel, SecondWheelY + RadiusWheel), new Point(FirstWheelX + RadiusWheel, FirstWheelY + RadiusWheel) };
 
-            FirstWheelX -= RadiusWheel;
-            FirstWheelY -= RadiusWheel;
+            bool check = checkIfCollisionInevitable(a, b, surfaceUnderWheel);
 
-            SecondWheelX -= RadiusWheel;
-            SecondWheelY -= RadiusWheel;
+            Warning = check ? "Danger" : "Safe";
+            ColorWarning = check ? "Red" : "Green";
+        }
+
+        public void distimerTick()
+        {
+            ElapsedTime = timer.Elapsed;
+
+            Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel);
+
+            FirstWheelX += velocityWheel;
+            FirstWheelY = Wheel.getYOfCenterByX(FirstWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
+            Point b = new Point(FirstWheelX, FirstWheelY);
+
+            SecondWheelX += velocityWheel;
+            SecondWheelY = Wheel.getYOfCenterByX(SecondWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
+            Point a = new Point(SecondWheelX, SecondWheelY);
+
+            Body = new List<Point> { new Point(SecondWheelX + RadiusWheel, SecondWheelY + RadiusWheel), new Point(FirstWheelX + RadiusWheel, FirstWheelY + RadiusWheel) };
 
             bool check = checkIfCollisionInevitable(a, b, surfaceUnderWheel);
 
