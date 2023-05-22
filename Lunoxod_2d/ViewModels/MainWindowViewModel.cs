@@ -101,30 +101,27 @@ namespace Lunoxod_2d.ViewModels
             CanvasPosition = value;
         }
 
-        private Matrix scaleMatrix = new Matrix(1.0, 0.0, 0.0, -1.0, 0, 0);
-
+        private Matrix scaleMatrix = new Matrix(1.0, 0.0, 0.0, -1.0, 0.0, 0.0);
+        
         public Matrix ScaleMatrix
         {
             get => scaleMatrix;
             set => this.RaiseAndSetIfChanged(ref scaleMatrix, value);
         }
-
+        
         public void setScaleMatrix(Matrix value)
         {
             ScaleMatrix = value;
         }
 
+        public Matrix getScaleMatrix()
+        {
+            return ScaleMatrix;
+        }
+        
         public double getScaleFromScaleMatrix()
         {
             return ScaleMatrix.M11;
-        }
-
-        private string path = "C:\\Users\\Xiaomi\\source\\repos\\Lunoxod_2d\\Lunoxod_2d\\Source";
-
-        public string Path
-        {
-            get => path;
-            set => this.RaiseAndSetIfChanged(ref path, value);
         }
 
         private string coordsFromFile = "";

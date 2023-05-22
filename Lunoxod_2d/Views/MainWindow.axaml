@@ -73,9 +73,16 @@
 					<Canvas>
 						<Canvas.RenderTransform>
 							<TransformGroup>
-								<TranslateTransform X="{Binding CanvasPosition.X}" 
-													Y="{Binding CanvasPosition.Y}"
-								/>
+								<TranslateTransform X="{Binding CanvasPosition.X}"
+													Y="{Binding CanvasPosition.Y}"/>
+								<!--
+								<TranslateTransform X="{Binding PointTranslateTransform.X, Converter={StaticResource myConverter}, ConverterParameter=0|-1|0|0|0|0|0}"/>
+								
+								<ScaleTransform ScaleX="{Binding ValueScaleTransform, Converter={StaticResource myConverter}, ConverterParameter=0|1|0|0|0|0|0}}" 
+												ScaleY="{Binding ValueScaleTransform, Converter={StaticResource myConverter}, ConverterParameter=0|-1|0|0|0|0|0}"/>
+								
+								<TranslateTransform X="{Binding PointTranslateTransform.X, Converter={StaticResource myConverter}, ConverterParameter=0|1|0|0|0|0|0}"/>
+								-->
 								<MatrixTransform Matrix="{Binding ScaleMatrix}"/>
 							</TransformGroup>
 						</Canvas.RenderTransform>
@@ -122,13 +129,14 @@
 						<!--<Path Fill="Orange" Data="M 0,0 c 0,0 50,0 50,-50 c 0,0 50,0 50,50 h -50 v 50 l -50,-50 Z" Canvas.Left="30" Canvas.Top="250"/>-->
 
 
-						<Ellipse Stroke="Magenta" 
-								 StrokeThickness="3" 
-								 Width="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}" 
+						<Ellipse Stroke="Magenta"
+								 StrokeThickness="3"
+								 Width="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}"
 								 Height="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}"
-								 Canvas.Left="{Binding Lunoxod.FirstWheelX}" 
+								 Canvas.Left="{Binding Lunoxod.FirstWheelX}"
 								 Canvas.Top="{Binding Lunoxod.FirstWheelY}"
 						/>
+							
 
 						<Ellipse Stroke="Red" 
 								 StrokeThickness="3" 
@@ -136,8 +144,7 @@
 								 Height="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}"
 								 Canvas.Left="{Binding Lunoxod.SecondWheelX}" 
 								 Canvas.Top="{Binding Lunoxod.SecondWheelY}"
-						/> 
-
+						/>
 					</Canvas>
 				</Canvas>
 			</Border>
