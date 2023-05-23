@@ -70,6 +70,12 @@ namespace Lunoxod_2d.Views
 
 
             Point b = e.GetPosition(this);
+            //Point c = viewModel.getCanvasPosition();
+            //Point d = (c - b) * scale + b;
+            //viewModel.setCanvasPosition(d);
+
+            //viewModel.setCanvasScale(scale);
+            
             //b.X - scale * b.X, b.Y - scale * b.Y this is how i microsoft dicumentation define center
             
             Matrix a = new Matrix(scale, 0.0, 0.0, -scale, b.X - scale * b.X, b.Y - scale * b.Y); 
@@ -78,11 +84,11 @@ namespace Lunoxod_2d.Views
             //Matrix translateOrigin = new Matrix(1, 0, 0, 1, b.X, b.Y);
             //Matrix scaleMatrix = new Matrix(scale, 0, 0, -scale, 0, 0);
             //Matrix translateBack = new Matrix(1, 0, 0, 1, -b.X, -b.Y);
-            //
+            ////
             //Matrix a = Matrix.Identity;
-            //a = a * translateOrigin;
-            //a = a * scaleMatrix;
-            //a = a * translateBack;
+            //a = translateOrigin * a;
+            //a = scaleMatrix * a;
+            //a = translateBack * a;
 
             viewModel.setScaleMatrix(a);
             

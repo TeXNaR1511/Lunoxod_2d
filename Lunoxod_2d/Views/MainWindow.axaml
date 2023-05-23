@@ -73,8 +73,10 @@
 					<Canvas>
 						<Canvas.RenderTransform>
 							<TransformGroup>
+						
 								<TranslateTransform X="{Binding CanvasPosition.X}"
 													Y="{Binding CanvasPosition.Y}"/>
+								<!--<ScaleTransform ScaleX="{Binding CanvasScale}" ScaleY="{Binding CanvasScale, Converter={StaticResource myConverter}, ConverterParameter=0|-1|0|0|0|0|0}"/>-->
 								<!--
 								<TranslateTransform X="{Binding PointTranslateTransform.X, Converter={StaticResource myConverter}, ConverterParameter=0|-1|0|0|0|0|0}"/>
 								

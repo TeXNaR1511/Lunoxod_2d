@@ -45,7 +45,7 @@ namespace Lunoxod_2d
             set => this.RaiseAndSetIfChanged(ref elapsedTime, value);
         }
 
-        DispatcherTimer distimer;
+        DispatcherTimer distimer = new DispatcherTimer() { Interval = new TimeSpan() };
 
         private string buttonName = "Start";
 
@@ -184,7 +184,7 @@ namespace Lunoxod_2d
             initDistimerTick();
             //TimerCallback tm = new TimerCallback(setElapsedTime);
             //Timer timer = new Timer(tm, null, 0, 100);
-            distimer = new DispatcherTimer() { Interval = new TimeSpan() };
+            //distimer = new DispatcherTimer() { Interval = new TimeSpan() };
             distimer.Tick += (s, e) =>
             {
                 distimerTick();
@@ -282,13 +282,13 @@ namespace Lunoxod_2d
 
             FirstWheelX = FirstWheelInit - RadiusWheel;
             FirstWheelY = Wheel.getYOfCenterByX(FirstWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
-            Point b = new Point(FirstWheelX, FirstWheelY);
+            Point b = new Point(FirstWheelX + RadiusWheel, FirstWheelY + RadiusWheel);
 
             SecondWheelX = SecondWheelInit - RadiusWheel;
             SecondWheelY = Wheel.getYOfCenterByX(SecondWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
-            Point a = new Point(SecondWheelX, SecondWheelY);
+            Point a = new Point(SecondWheelX + RadiusWheel, SecondWheelY + RadiusWheel);
 
-            Body = new List<Point> { new Point(SecondWheelX + RadiusWheel, SecondWheelY + RadiusWheel), new Point(FirstWheelX + RadiusWheel, FirstWheelY + RadiusWheel) };
+            Body = new List<Point> { a, b };
 
             bool check = checkIfCollisionInevitable(a, b, surfaceUnderWheel);
 
@@ -304,13 +304,13 @@ namespace Lunoxod_2d
 
             FirstWheelX += velocityWheel;
             FirstWheelY = Wheel.getYOfCenterByX(FirstWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
-            Point b = new Point(FirstWheelX, FirstWheelY);
+            Point b = new Point(FirstWheelX + RadiusWheel, FirstWheelY + RadiusWheel);
 
             SecondWheelX += velocityWheel;
             SecondWheelY = Wheel.getYOfCenterByX(SecondWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
-            Point a = new Point(SecondWheelX, SecondWheelY);
+            Point a = new Point(SecondWheelX + RadiusWheel, SecondWheelY + RadiusWheel);
 
-            Body = new List<Point> { new Point(SecondWheelX + RadiusWheel, SecondWheelY + RadiusWheel), new Point(FirstWheelX + RadiusWheel, FirstWheelY + RadiusWheel) };
+            Body = new List<Point> { a, b };
 
             bool check = checkIfCollisionInevitable(a, b, surfaceUnderWheel);
 
