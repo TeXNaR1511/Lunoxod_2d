@@ -11,6 +11,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using Avalonia.Media;
+using System.Reactive.Joins;
 
 namespace Lunoxod_2d
 {
@@ -166,6 +169,13 @@ namespace Lunoxod_2d
         public Lunoxod()
         {
             //nothing
+            coordinates = "0,0 0,0";
+            SurfaceUnderWheel = createListOfPointsFromString(coordinates);
+            initDistimerTick();
+            distimer.Tick += (s, e) =>
+            {
+                distimerTick();
+            };
         }
 
         public Lunoxod(string coord)
@@ -209,14 +219,23 @@ namespace Lunoxod_2d
 
         public List<Point> createListOfPointsFromString(string coordinates)
         {
+            //Regex regex = new Regex(@"туп(\w*)");
+            //MatchCollection matches = regex.Matches(coordinates);
             List<Point> answer = new List<Point>();
-            if (coordinates == null) { return answer; }
+            Regex regex = new Regex(@"-?\d+(\.\d+)?,-?\d+(\.\d+)?([ \n]+)?");
+            MatchCollection matches = regex.Matches(coordinates);
+            if (coordinates == null || matches.Count != coordinates.Count(x => x == ',')) 
+            { 
+                return new List<Point> { new Point(0, 0), new Point(0, 0) }; 
+            }
             else
             {
-                string[] s = coordinates.Split();
+                string[] s = Regex.Split(coordinates, @"[ \n]+");
                 for (int i = 0; i < s.Length; i++) 
                 {
                     string[] a = s[i].Split(',');
+                    a[0] = a[0].Replace('.', ',');
+                    a[1] = a[1].Replace('.', ',');
                     answer.Add(new Point(Convert.ToDouble(a[0]), Convert.ToDouble(a[1])));
                 }
                 return answer;

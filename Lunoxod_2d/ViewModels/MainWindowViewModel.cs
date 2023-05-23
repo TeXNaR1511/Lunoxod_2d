@@ -135,6 +135,7 @@ namespace Lunoxod_2d.ViewModels
             result = await dialog.ShowAsync(new Window());
             if (result != null)
             {
+                System.Diagnostics.Debug.WriteLine(File.ReadAllText(result.First()));
                 coordsFromFile = File.ReadAllText(result.First());
             }
         }
@@ -147,7 +148,10 @@ namespace Lunoxod_2d.ViewModels
 
         public void setLunoxod()
         {
-            Lunoxod = new Lunoxod(coordsFromFile);
+            if (coordsFromFile != "")
+            {
+                Lunoxod = new Lunoxod(coordsFromFile);
+            }
         }
     }
 }
