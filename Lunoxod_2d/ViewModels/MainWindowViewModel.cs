@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.IO;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Lunoxod_2d.ViewModels
 {
@@ -142,8 +143,13 @@ namespace Lunoxod_2d.ViewModels
 
         public void Print()
         {
-            System.Diagnostics.Debug.WriteLine(coordsFromFile);
-            System.Diagnostics.Debug.WriteLine(coordsFromFile.GetType());
+            //System.Diagnostics.Debug.WriteLine(coordsFromFile);
+            //System.Diagnostics.Debug.WriteLine(coordsFromFile.GetType());
+            //List<Point> ter = Lunoxod.Wheel getIntersectionEllipseEllipse(new Point(0, 0), 1, new Point(1, 1), 1);
+            //for (int i = 0; i < ter.Count; i++)
+            //{
+            //    System.Diagnostics.Debug.WriteLine(ter[i]);
+            //}
         }
 
         public void setLunoxod()

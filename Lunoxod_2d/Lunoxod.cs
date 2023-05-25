@@ -19,7 +19,24 @@ namespace Lunoxod_2d
 {
     public class Lunoxod : ViewModelBase
     {
-      
+
+        private bool firstModel = true;
+
+        public bool FirstModel
+        {
+            get => firstModel;
+            set => this.RaiseAndSetIfChanged(ref firstModel, value);
+        }
+
+        private bool secondModel = false;
+
+        public bool SecondModel
+        {
+            get => secondModel;
+            set => this.RaiseAndSetIfChanged(ref secondModel, value);
+        }
+
+
         private double velocityWheel = 1.0;
 
         public double VelocityWheel
@@ -164,6 +181,14 @@ namespace Lunoxod_2d
 
         private TimeSpan timeShift = TimeSpan.Zero;
 
+        private double roverBodyLength = 100.0;
+
+        public double RoverBodyLength
+        {
+            get => roverBodyLength;
+            set => this.RaiseAndSetIfChanged(ref roverBodyLength, value);
+        }
+
         //Constructors
 
         public Lunoxod()
@@ -180,6 +205,7 @@ namespace Lunoxod_2d
 
         public Lunoxod(string coord)
         {
+
             coordinates = coord;
             //startShow();
             SurfaceUnderWheel = createListOfPointsFromString(coordinates);
@@ -187,7 +213,7 @@ namespace Lunoxod_2d
 
             //FirstWheelX = FirstWheelInit - RadiusWheel;
             //SecondWheelX = SecondWheelInit - RadiusWheel;
-
+            //Wheel.getXYAtDistanceFromPoint(new Point(0, 0), 100, Wheel.getCenterOfWheel(), true);
 
 
             //System.Diagnostics.Debug.WriteLine(SurfaceInitY);
@@ -298,14 +324,44 @@ namespace Lunoxod_2d
             ElapsedTime = timer.Elapsed;
 
             Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel);
+            //System.Diagnostics.Debug.WriteLine(Wheel.getXYAtDistanceFromPoint(new Point(0, 0), 100, Wheel.getCenterOfWheel(), true));
 
-            FirstWheelX = FirstWheelInit - RadiusWheel;
-            FirstWheelY = Wheel.getYOfCenterByX(FirstWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
-            Point b = new Point(FirstWheelX + RadiusWheel, FirstWheelY + RadiusWheel);
+            Point a = new Point(0, 0);
+            Point b = new Point(0, 0);
 
-            SecondWheelX = SecondWheelInit - RadiusWheel;
-            SecondWheelY = Wheel.getYOfCenterByX(SecondWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
-            Point a = new Point(SecondWheelX + RadiusWheel, SecondWheelY + RadiusWheel);
+            if (FirstModel)
+            {
+                FirstWheelX = FirstWheelInit - RadiusWheel;
+                FirstWheelY = Wheel.getYOfCenterByX(FirstWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
+                b = new Point(FirstWheelX + RadiusWheel, FirstWheelY + RadiusWheel);
+
+                SecondWheelX = SecondWheelInit - RadiusWheel;
+                SecondWheelY = Wheel.getYOfCenterByX(SecondWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
+                a = new Point(SecondWheelX + RadiusWheel, SecondWheelY + RadiusWheel);
+            }
+
+            if (SecondModel)
+            {
+                FirstWheelX = FirstWheelInit - RadiusWheel;
+                FirstWheelY = Wheel.getYOfCenterByX(FirstWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
+                b = new Point(FirstWheelX + RadiusWheel, FirstWheelY + RadiusWheel);
+                
+                Point v = Wheel.getXYAtDistanceFromPoint(b, RoverBodyLength, Wheel.getCenterOfWheel(), true);
+                a = v;
+                SecondWheelX = v.X - RadiusWheel;
+                SecondWheelY = v.Y - RadiusWheel;
+
+                //alternative, when back wheel is main
+
+                //SecondWheelX = SecondWheelInit - RadiusWheel;
+                //SecondWheelY = Wheel.getYOfCenterByX(SecondWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
+                //b = new Point(SecondWheelX + RadiusWheel, SecondWheelY + RadiusWheel);
+                //
+                //Point v = Wheel.getXYAtDistanceFromPoint(b, RoverBodyLength, Wheel.getCenterOfWheel(), false);
+                //a = v;
+                //FirstWheelX = v.X - RadiusWheel;
+                //FirstWheelY = v.Y - RadiusWheel;
+            }
 
             Body = new List<Point> { a, b };
 
@@ -321,13 +377,42 @@ namespace Lunoxod_2d
 
             Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel);
 
-            FirstWheelX += velocityWheel;
-            FirstWheelY = Wheel.getYOfCenterByX(FirstWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
-            Point b = new Point(FirstWheelX + RadiusWheel, FirstWheelY + RadiusWheel);
+            Point a = new Point(0, 0);
+            Point b = new Point(0, 0);
 
-            SecondWheelX += velocityWheel;
-            SecondWheelY = Wheel.getYOfCenterByX(SecondWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
-            Point a = new Point(SecondWheelX + RadiusWheel, SecondWheelY + RadiusWheel);
+            if (FirstModel)
+            {
+                FirstWheelX += velocityWheel;
+                FirstWheelY = Wheel.getYOfCenterByX(FirstWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
+                b = new Point(FirstWheelX + RadiusWheel, FirstWheelY + RadiusWheel);
+
+                SecondWheelX += velocityWheel;
+                SecondWheelY = Wheel.getYOfCenterByX(SecondWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
+                a = new Point(SecondWheelX + RadiusWheel, SecondWheelY + RadiusWheel);
+            }
+
+            if (SecondModel)
+            {
+                FirstWheelX += velocityWheel;
+                FirstWheelY = Wheel.getYOfCenterByX(FirstWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
+                b = new Point(FirstWheelX + RadiusWheel, FirstWheelY + RadiusWheel);
+                
+                Point v = Wheel.getXYAtDistanceFromPoint(b, RoverBodyLength, Wheel.getCenterOfWheel(), true);
+                a = v;
+                SecondWheelX = v.X - RadiusWheel;
+                SecondWheelY = v.Y - RadiusWheel;
+
+                //alternative, when back wheel is main
+
+                //SecondWheelX += velocityWheel;
+                //SecondWheelY = Wheel.getYOfCenterByX(SecondWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
+                //b = new Point(SecondWheelX + RadiusWheel, SecondWheelY + RadiusWheel);
+                //
+                //Point v = Wheel.getXYAtDistanceFromPoint(b, RoverBodyLength, Wheel.getCenterOfWheel(), false);
+                //a = v;
+                //FirstWheelX = v.X - RadiusWheel;
+                //FirstWheelY = v.Y - RadiusWheel;
+            }
 
             Body = new List<Point> { a, b };
 
@@ -376,6 +461,46 @@ namespace Lunoxod_2d
             RadiusWheel = 30.0;
             FirstWheelInit = 100.0;
             SecondWheelInit = 0.0;
+        }
+
+        private string indexRoverModel = "0";
+
+        public string IndexRoverModel
+        {
+            get => indexRoverModel;
+            set
+            {
+                if (value == "0")
+                {
+                    FirstModel = true;
+                    SecondModel = false;
+                }
+                else if (value == "1")
+                {
+                    FirstModel = false;
+                    SecondModel = true;
+                }
+                this.RaiseAndSetIfChanged(ref indexRoverModel, value);
+            }
+        }
+
+        public void Print()
+        {
+            List<Point> a = Wheel.getIntersectionEllipseEllipse(new Point(1, 1), 1, new Point(2, 3), 2);
+            for (int i = 0; i < a.Count; i++)
+            {
+                System.Diagnostics.Debug.WriteLine(a[i]);
+            }
+            //List<Point> b = Wheel.getIntersectionLineEllipse(new Point(1, 1), 1, new List<double> { 3, -2, 1 });
+            //for (int i = 0; i < b.Count; i++)
+            //{
+            //    System.Diagnostics.Debug.WriteLine(b[i]);
+            //}
+            //List<Point> c = Wheel.getIntersectionLineEllipse(new Point(1, 1), 1, new Point(0, 0.5), new Point(1, 2));
+            //for (int i = 0; i < c.Count; i++)
+            //{
+            //    System.Diagnostics.Debug.WriteLine(c[i]);
+            //}
         }
 
     }
