@@ -461,6 +461,7 @@ namespace Lunoxod_2d
             RadiusWheel = 30.0;
             FirstWheelInit = 100.0;
             SecondWheelInit = 0.0;
+            RoverBodyLength = 100.0;
         }
 
         private string indexRoverModel = "0";
