@@ -20,20 +20,28 @@ namespace Lunoxod_2d
     public class Lunoxod : ViewModelBase
     {
 
-        private bool firstModel = true;
+        private bool simplestModel = true;
 
-        public bool FirstModel
+        public bool SimplestModel
         {
-            get => firstModel;
-            set => this.RaiseAndSetIfChanged(ref firstModel, value);
+            get => simplestModel;
+            set => this.RaiseAndSetIfChanged(ref simplestModel, value);
         }
 
-        private bool secondModel = false;
+        private bool simpleModel = false;
 
-        public bool SecondModel
+        public bool SimpleModel
         {
-            get => secondModel;
-            set => this.RaiseAndSetIfChanged(ref secondModel, value);
+            get => simpleModel;
+            set => this.RaiseAndSetIfChanged(ref simpleModel, value);
+        }
+
+        private bool normalModel = false;
+
+        public bool NormalModel
+        {
+            get => normalModel;
+            set => this.RaiseAndSetIfChanged(ref normalModel, value);
         }
 
 
@@ -377,7 +385,7 @@ namespace Lunoxod_2d
             Point a = new Point(0, 0);
             Point b = new Point(0, 0);
 
-            if (FirstModel)
+            if (SimplestModel)
             {
                 FirstWheelX = FirstWheelInit - RadiusWheel;
                 FirstWheelY = Wheel.getYOfCenterByX(FirstWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
@@ -388,7 +396,7 @@ namespace Lunoxod_2d
                 a = new Point(SecondWheelX + RadiusWheel, SecondWheelY + RadiusWheel);
             }
 
-            if (SecondModel)
+            if (SimpleModel)
             {
                 FirstWheelX = FirstWheelInit - RadiusWheel;
                 FirstWheelY = Wheel.getYOfCenterByX(FirstWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
@@ -411,6 +419,11 @@ namespace Lunoxod_2d
                 //FirstWheelY = v.Y - RadiusWheel;
             }
 
+            if (NormalModel)
+            {
+
+            }
+
             Body = new List<Point> { a, b };
 
             bool check = checkIfCollisionInevitable(a, b, surfaceUnderWheel);
@@ -428,7 +441,7 @@ namespace Lunoxod_2d
             Point a = new Point(0, 0);
             Point b = new Point(0, 0);
 
-            if (FirstModel)
+            if (SimplestModel)
             {
                 if (StartButtonPressed)
                 {
@@ -453,7 +466,7 @@ namespace Lunoxod_2d
                 a = new Point(SecondWheelX + RadiusWheel, SecondWheelY + RadiusWheel);
             }
 
-            if (SecondModel)
+            if (SimpleModel)
             {
                 if (StartButtonPressed)
                 {
@@ -481,6 +494,11 @@ namespace Lunoxod_2d
                 //a = v;
                 //FirstWheelX = v.X - RadiusWheel;
                 //FirstWheelY = v.Y - RadiusWheel;
+            }
+
+            if (NormalModel)
+            {
+
             }
 
             Body = new List<Point> { a, b };
@@ -542,13 +560,21 @@ namespace Lunoxod_2d
             {
                 if (value == "0")
                 {
-                    FirstModel = true;
-                    SecondModel = false;
+                    SimplestModel = true;
+                    SimpleModel = false;
+                    NormalModel = false;
                 }
                 else if (value == "1")
                 {
-                    FirstModel = false;
-                    SecondModel = true;
+                    SimplestModel = false;
+                    SimpleModel = true;
+                    NormalModel = false;
+                }
+                else if (value == "2")
+                {
+                    SimplestModel = false;
+                    SimpleModel = false;
+                    NormalModel = true;
                 }
                 this.RaiseAndSetIfChanged(ref indexRoverModel, value);
             }

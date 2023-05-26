@@ -280,7 +280,7 @@
 						   VerticalAlignment="Center" 
 						   HorizontalAlignment="Center" 
 						   Grid.Row="6"
-						   IsVisible="{Binding Lunoxod.FirstModel}"/>
+						   IsVisible="{Binding Lunoxod.SimplestModel}"/>
 				<TextBox Text="{Binding Lunoxod.SecondWheelInit}" 
 						 VerticalContentAlignment="Center" 
 						 HorizontalContentAlignment="Center" 
@@ -288,12 +288,12 @@
 						 HorizontalAlignment="Stretch" 
 						 Grid.Row="7" 
 						 Margin="2"
-						 IsVisible="{Binding Lunoxod.FirstModel}"/>
+						 IsVisible="{Binding Lunoxod.SimplestModel}"/>
 				<TextBlock Text="Rover Body Length"
 						   VerticalAlignment="Center"
 						   HorizontalAlignment="Center"
 						   Grid.Row="6"
-						   IsVisible="{Binding Lunoxod.SecondModel}"/>
+						   IsVisible="{Binding Lunoxod.SimpleModel}"/>
 				<TextBox Text="{Binding Lunoxod.RoverBodyLength}"
 						 VerticalContentAlignment="Center"
 						 HorizontalContentAlignment="Center"
@@ -301,7 +301,7 @@
 						 HorizontalAlignment="Stretch"
 						 Grid.Row="7"
 						 Margin="2"
-						 IsVisible="{Binding Lunoxod.SecondModel}"/>
+						 IsVisible="{Binding Lunoxod.SimpleModel}"/>
 				<Button Command="{Binding Lunoxod.resetParameters}" 
 						VerticalContentAlignment="Center" 
 						HorizontalContentAlignment="Center" 
