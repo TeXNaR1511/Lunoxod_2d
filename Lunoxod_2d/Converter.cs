@@ -11,7 +11,6 @@ namespace Lunoxod_2d.Converter
     public class Converter : IValueConverter
     {
         
-
         private double GetDoubleValue(object? str, double defaultValue)
         {
             string str2 = str.ToString();

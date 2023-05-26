@@ -13,6 +13,7 @@
 	<Window.Resources>
 		<local:Converter x:Key="myConverter"/>
 	</Window.Resources>
+	
 	<!--
 	<Window.Styles>
 		<Style Selector="Rectangle.exp1">
@@ -73,9 +74,8 @@
 					<Canvas>
 						<Canvas.RenderTransform>
 							<TransformGroup>
-						
-								<TranslateTransform X="{Binding CanvasPosition.X}"
-													Y="{Binding CanvasPosition.Y}"/>
+
+								<TranslateTransform X="{Binding CanvasPosition.X}" Y="{Binding CanvasPosition.Y}"/>
 								<!--<ScaleTransform ScaleX="{Binding CanvasScale}" ScaleY="{Binding CanvasScale, Converter={StaticResource myConverter}, ConverterParameter=0|-1|0|0|0|0|0}"/>-->
 								<!--
 								<TranslateTransform X="{Binding PointTranslateTransform.X, Converter={StaticResource myConverter}, ConverterParameter=0|-1|0|0|0|0|0}"/>
@@ -85,7 +85,13 @@
 								
 								<TranslateTransform X="{Binding PointTranslateTransform.X, Converter={StaticResource myConverter}, ConverterParameter=0|1|0|0|0|0|0}"/>
 								-->
-								<MatrixTransform Matrix="{Binding ScaleMatrix}"/>
+								<!--<MatrixTransform Matrix="{Binding ScaleMatrix}"/>-->
+								<TranslateTransform X="{Binding CanvasTranslate.X, Converter={StaticResource myConverter}, ConverterParameter=0|-1|0|0|0|0|0}" Y="{Binding CanvasTranslate.Y, Converter={StaticResource myConverter}, ConverterParameter=0|1|0|0|0|0|0}"/>
+								<ScaleTransform ScaleX="{Binding CanvasScale}" ScaleY="{Binding CanvasScale}"/>
+								<TranslateTransform X="{Binding CanvasTranslate.X, Converter={StaticResource myConverter}, ConverterParameter=0|1|0|0|0|0|0}" Y="{Binding CanvasTranslate.Y, Converter={StaticResource myConverter}, ConverterParameter=0|-1|0|0|0|0|0}"/>
+								<ScaleTransform ScaleX="1" ScaleY="-1"/>
+								
+								
 							</TransformGroup>
 						</Canvas.RenderTransform>
 
@@ -167,10 +173,21 @@
 						HorizontalContentAlignment="Center" 
 						VerticalAlignment="Stretch" 
 						HorizontalAlignment="Stretch" 
-						Content="{Binding Lunoxod.ButtonName}" 
+						Content="{Binding Lunoxod.StartButtonName}" 
 						Grid.Column="0" 
 						Grid.Row="0" 
-						Margin="2"/>
+						Margin="2"
+						IsEnabled="{Binding !Lunoxod.BackButtonPressed}"/>
+				<Button Command="{Binding Lunoxod.timerBackStop}"
+						VerticalContentAlignment="Center"
+						HorizontalContentAlignment="Center"
+						VerticalAlignment="Stretch"
+						HorizontalAlignment="Stretch"
+						Content="{Binding Lunoxod.BackButtonName}"
+						Grid.Column="0"
+						Grid.Row="1"
+						Margin="2" 
+						IsEnabled="{Binding !Lunoxod.StartButtonPressed}"/>
 				<Button Command="{Binding Lunoxod.timerReset}" 
 						VerticalContentAlignment="Center" 
 						HorizontalContentAlignment="Center" 
@@ -178,36 +195,37 @@
 						HorizontalAlignment="Stretch" 
 						Content="Reset" 
 						Grid.Column="0" 
-						Grid.Row="1" 
+						Grid.Row="2" 
 						Margin="2"/>
 				<ComboBox DockPanel.Dock="Top" 
 						  SelectedIndex="{Binding Lunoxod.IndexRoverModel, Mode=TwoWay}" 
 						  HorizontalAlignment="Stretch"
 						  VerticalAlignment="Stretch"
-						  Grid.Column="0"
+						  Grid.Column="1"
 						  Grid.Row="2"
 						  Margin="2"
 						  VerticalContentAlignment="Center"
 						  HorizontalContentAlignment="Center">
 					<ComboBoxItem Content="Simplest Model"/>
 					<ComboBoxItem Content="Simple Model"/>
+					<ComboBoxItem Content="Normal Model"/>
 				</ComboBox>
-				<Button Command="{Binding Lunoxod.Print}" 
+				<!--<Button Command="{Binding Lunoxod.Print}" 
 						VerticalContentAlignment="Center" 
 						HorizontalContentAlignment="Center" 
 						VerticalAlignment="Stretch" 
 						HorizontalAlignment="Stretch" 
 						Content="Print" 
 						Grid.Column="1" 
-						Grid.Row="2"/>
-				<TextBlock FontSize="30" 
+						Grid.Row="2"/>-->
+				<!--<TextBlock FontSize="30" 
 						   Width="300" 
 						   TextAlignment="Left" 
 						   VerticalAlignment="Center" 
 						   HorizontalAlignment="Center" 
 						   Grid.Column="1" 
 						   Grid.Row="0" 
-						   Text="{Binding Lunoxod.ElapsedTime}"/>
+						   Text="{Binding Lunoxod.ElapsedTime}"/>-->
 			</Grid>
 			<Grid ShowGridLines="False" 
 				  Grid.Column="1" 

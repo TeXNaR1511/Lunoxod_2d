@@ -71,6 +71,23 @@ namespace Lunoxod_2d.ViewModels
             return CanvasScale;
         }
 
+        private Point canvasTranslate = new Point(0.0, 0.0);
+
+        public Point CanvasTranslate
+        {
+            get => canvasTranslate;
+            set => this.RaiseAndSetIfChanged(ref canvasTranslate, value);
+        }
+
+        public void setCanvasTranslate(Point value)
+        {
+            CanvasTranslate = value;
+        }
+        public Point getCanvasTranslate()
+        {
+            return CanvasTranslate;
+        }
+
         //private bool mouseWheelPressed = false;
         //
         //public bool MouseWheelPressed
@@ -102,7 +119,7 @@ namespace Lunoxod_2d.ViewModels
             CanvasPosition = value;
         }
 
-        private Matrix scaleMatrix = new Matrix(1.0, 0.0, 0.0, -1.0, 0.0, 0.0);
+        private Matrix scaleMatrix = new Matrix(1.0, 0.0, 0.0, 1.0, 0.0, 0.0);
         
         public Matrix ScaleMatrix
         {
@@ -122,7 +139,7 @@ namespace Lunoxod_2d.ViewModels
         
         public double getScaleFromScaleMatrix()
         {
-            return ScaleMatrix.M11;
+            return Math.Abs(ScaleMatrix.M11);
         }
 
         private string coordsFromFile = "";

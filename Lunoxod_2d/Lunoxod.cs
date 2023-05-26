@@ -67,12 +67,20 @@ namespace Lunoxod_2d
 
         DispatcherTimer distimer = new DispatcherTimer() { Interval = new TimeSpan() };
 
-        private string buttonName = "Start";
+        private string startButtonName = "Start";
 
-        public string ButtonName
+        public string StartButtonName
         {
-            get => buttonName;
-            set => this.RaiseAndSetIfChanged(ref buttonName, value);
+            get => startButtonName;
+            set => this.RaiseAndSetIfChanged(ref startButtonName, value);
+        }
+
+        private string backButtonName = "Back";
+
+        public string BackButtonName
+        {
+            get => backButtonName;
+            set => this.RaiseAndSetIfChanged(ref backButtonName, value);
         }
 
         Wheel wheel = new Wheel();
@@ -189,6 +197,24 @@ namespace Lunoxod_2d
             set => this.RaiseAndSetIfChanged(ref roverBodyLength, value);
         }
 
+        private bool startButtonPressed = false;
+
+        public bool StartButtonPressed
+        {
+            get => startButtonPressed;
+            set => this.RaiseAndSetIfChanged(ref startButtonPressed, value);
+        }
+
+        private bool backButtonPressed = false;
+
+        public bool BackButtonPressed
+        {
+            get => backButtonPressed;
+            set => this.RaiseAndSetIfChanged(ref backButtonPressed, value);
+        }
+
+        
+
         //Constructors
 
         public Lunoxod()
@@ -275,13 +301,34 @@ namespace Lunoxod_2d
             {
                 timer.Stop();
                 distimer.Stop();
-                ButtonName = "Start";
+                StartButtonName = "Start";
+                StartButtonPressed = false;
             }
             else
             {
                 timer.Start();
                 distimer.Start();
-                ButtonName = "Stop";
+                StartButtonName = "Stop";
+                StartButtonPressed = true;
+            }
+        }
+
+        public void timerBackStop()
+        {
+            //System.Diagnostics.Debug.WriteLine("timerStartStop");
+            if (timer.IsRunning)
+            {
+                timer.Stop();
+                distimer.Stop();
+                BackButtonName = "Back";
+                BackButtonPressed = false;
+            }
+            else
+            {
+                timer.Start();
+                distimer.Start();
+                BackButtonName = "Stop";
+                BackButtonPressed = true;
             }
         }
 
@@ -294,10 +341,11 @@ namespace Lunoxod_2d
 
             initDistimerTick();
             
-            ButtonName = "Start";
+            StartButtonName = "Start";
+            BackButtonName = "Back";
             //ElapsedTime = TimeSpan.Zero;
-
-            
+            StartButtonPressed = false;
+            BackButtonPressed = false;
         }
 
         public TimeSpan getElapsedTime()
@@ -382,18 +430,39 @@ namespace Lunoxod_2d
 
             if (FirstModel)
             {
-                FirstWheelX += velocityWheel;
+                if (StartButtonPressed)
+                {
+                    FirstWheelX += velocityWheel;
+                }
+                if (BackButtonPressed)
+                {
+                    FirstWheelX -= velocityWheel;
+                }
                 FirstWheelY = Wheel.getYOfCenterByX(FirstWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
                 b = new Point(FirstWheelX + RadiusWheel, FirstWheelY + RadiusWheel);
 
-                SecondWheelX += velocityWheel;
+                if (StartButtonPressed)
+                {
+                    SecondWheelX += velocityWheel;
+                }
+                if (BackButtonPressed)
+                {
+                    SecondWheelX -= velocityWheel;
+                }
                 SecondWheelY = Wheel.getYOfCenterByX(SecondWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
                 a = new Point(SecondWheelX + RadiusWheel, SecondWheelY + RadiusWheel);
             }
 
             if (SecondModel)
             {
-                FirstWheelX += velocityWheel;
+                if (StartButtonPressed)
+                {
+                    FirstWheelX += velocityWheel;
+                }
+                if (BackButtonPressed)
+                {
+                    FirstWheelX -= velocityWheel;
+                }
                 FirstWheelY = Wheel.getYOfCenterByX(FirstWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
                 b = new Point(FirstWheelX + RadiusWheel, FirstWheelY + RadiusWheel);
                 
@@ -502,6 +571,16 @@ namespace Lunoxod_2d
             //{
             //    System.Diagnostics.Debug.WriteLine(c[i]);
             //}
+        }
+
+        public void setStartButtonPressed(bool value)
+        {
+            StartButtonPressed = value;
+        }
+
+        public void setBackButtonPressed(bool value)
+        {
+            BackButtonPressed = value;
         }
 
     }

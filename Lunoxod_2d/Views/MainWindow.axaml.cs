@@ -63,7 +63,7 @@ namespace Lunoxod_2d.Views
             //matrix.ScaleAtPrepend(scale, scale, position.X, position.Y);
             //transform.Matrix = matrix;
 
-            double previousScale = viewModel.getScaleFromScaleMatrix();
+            double previousScale = viewModel.getCanvasScale();
 
             double scale = e.Delta.Y >= 0 ? previousScale * 1.05 : previousScale / 1.05;
             //double scale = System.Math.Exp(e.Delta.Y);
@@ -78,9 +78,9 @@ namespace Lunoxod_2d.Views
             
             //b.X - scale * b.X, b.Y - scale * b.Y this is how i microsoft dicumentation define center
             
-            Matrix a = new Matrix(scale, 0.0, 0.0, -scale, b.X - scale * b.X, b.Y - scale * b.Y); 
+            //Matrix a = new Matrix(scale, 0.0, 0.0, scale, b.X - scale * b.X, b.Y - scale * b.Y);
             //Matrix a = new Matrix(scale, 0, 0, scale, 300, 300);
-            
+
             //Matrix translateOrigin = new Matrix(1, 0, 0, 1, b.X, b.Y);
             //Matrix scaleMatrix = new Matrix(scale, 0, 0, -scale, 0, 0);
             //Matrix translateBack = new Matrix(1, 0, 0, 1, -b.X, -b.Y);
@@ -90,7 +90,10 @@ namespace Lunoxod_2d.Views
             //a = scaleMatrix * a;
             //a = translateBack * a;
 
-            viewModel.setScaleMatrix(a);
+            viewModel.setCanvasScale(scale);
+            viewModel.setCanvasTranslate(b);//new Point(b.X + 0 * viewModel.getCanvasPosition().X, b.Y + 0 * 5viewModel.getCanvasPosition().Y));
+
+            //viewModel.setScaleMatrix(a);
             
             //Point c = e.GetPosition(this);
             //viewModel.setPointTranslateTransform(c);
@@ -132,11 +135,12 @@ namespace Lunoxod_2d.Views
             //System.Diagnostics.Debug.WriteLine(e.Pointer);
             //System.Diagnostics.Debug.WriteLine(e.GetPosition(this));
             Avalonia.Point tempPosition = e.GetPosition(this);
+            System.Diagnostics.Debug.WriteLine(tempPosition);
             if (mouseWheelPressed)
             {
                 //Avalonia.Point tempPosition = e.GetPosition(this);
-                double a = currentPosition.X + (tempPosition.X - previousPosition.X) / viewModel.getScaleFromScaleMatrix();
-                double b = currentPosition.Y - (tempPosition.Y - previousPosition.Y) / viewModel.getScaleFromScaleMatrix();
+                double a = currentPosition.X + (tempPosition.X - previousPosition.X) / viewModel.getCanvasScale();
+                double b = currentPosition.Y - (tempPosition.Y - previousPosition.Y) / viewModel.getCanvasScale();
                 viewModel.setCanvasPosition(new Point(a, b));
             }
 
