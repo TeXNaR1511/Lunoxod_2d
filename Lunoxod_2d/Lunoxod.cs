@@ -282,7 +282,8 @@ namespace Lunoxod_2d
             //Regex regex = new Regex(@"туп(\w*)");
             //MatchCollection matches = regex.Matches(coordinates);
             List<Point> answer = new List<Point>();
-            Regex regex = new Regex(@"-?\d+(\.\d+)?,-?\d+(\.\d+)?([ \n]+)?");
+            coordinates = coordinates.Trim();
+            Regex regex = new Regex(@"-?\d+(\.\d+)?,-?\d+(\.\d+)?([ \n\u000D\u000A]+)?");
             MatchCollection matches = regex.Matches(coordinates);
             if (coordinates == null || matches.Count != coordinates.Count(x => x == ',')) 
             { 
@@ -290,7 +291,7 @@ namespace Lunoxod_2d
             }
             else
             {
-                string[] s = Regex.Split(coordinates, @"[ \n]+");
+                string[] s = Regex.Split(coordinates, @"[ \n\u000D\u000A]+");
                 for (int i = 0; i < s.Length; i++) 
                 {
                     string[] a = s[i].Split(',');
