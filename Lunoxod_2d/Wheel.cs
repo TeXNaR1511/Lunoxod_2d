@@ -16,10 +16,14 @@ namespace Lunoxod_2d
         private double epsilon = 1e-10;
 
         private double radius = 20.0;
+
+        private double xtick = 0.01;
         
         private List<Point> surface = new List<Point> { new Point(0, 0), new Point(10, 0)};
 
         private List<List<Point>> centerOfWheel = new List<List<Point>>();
+
+        private List<Point> centerOfSuspension = new List<Point>();
 
         //Constructors
 
@@ -27,11 +31,11 @@ namespace Lunoxod_2d
         {
             System.Diagnostics.Debug.WriteLine("Empty Constructor");
             centerOfWheel = setCenterOfWheel(surface);
-            List<Point> ter = getIntersectionEllipseEllipse(new Point(0, 0), 1, new Point(1, 1), 1);
-            for (int i = 0; i < ter.Count; i++)
-            {
-                System.Diagnostics.Debug.WriteLine(ter[i]);
-            }
+            //List<Point> ter = getIntersectionEllipseEllipse(new Point(0, 0), 1, new Point(1, 1), 1);
+            //for (int i = 0; i < ter.Count; i++)
+            //{
+            //    System.Diagnostics.Debug.WriteLine(ter[i]);
+            //}
         }
         public Wheel(List<Point> surface)
         {
@@ -58,20 +62,21 @@ namespace Lunoxod_2d
             //System.Diagnostics.Debug.WriteLine(HasValue(x[1]));
             //System.Diagnostics.Debug.WriteLine(getIntersectionOfTwoLines(new List<double>() { 3, -2, 1 }, new List<double>() { 3, -2, 1 }));
             centerOfWheel = setCenterOfWheel(surface);
+            
             //System.Diagnostics.Debug.WriteLine(FindRoots.Quadratic(1, 1, 1).Item1.Real);
             //print surface and centerOfWheel
-            for (int i = 0; i < surface.Count; i++)
-            {
-                System.Diagnostics.Debug.WriteLine(surface[i]);
-            }
-            for (int i = 0; i < centerOfWheel.Count; i++)
-            {
-                for (int j = 0; j < centerOfWheel[i].Count; j++)
-                {
-                    System.Diagnostics.Debug.Write("(" + centerOfWheel[i][j] + ") ");
-                }
-                System.Diagnostics.Debug.WriteLine("");
-            }
+            //for (int i = 0; i < surface.Count; i++)
+            //{
+            //    System.Diagnostics.Debug.WriteLine(surface[i]);
+            //}
+            //for (int i = 0; i < centerOfWheel.Count; i++)
+            //{
+            //    for (int j = 0; j < centerOfWheel[i].Count; j++)
+            //    {
+            //        System.Diagnostics.Debug.Write("(" + centerOfWheel[i][j] + ") ");
+            //    }
+            //    System.Diagnostics.Debug.WriteLine("");
+            //}
         }
 
         /// <summary>
@@ -266,6 +271,11 @@ namespace Lunoxod_2d
             return Math.Sqrt(Math.Pow(b.X - a.X, 2) + Math.Pow(b.Y - a.Y, 2));
         }
 
+        public double norm(Point a)
+        {
+            return Math.Sqrt(Math.Pow(a.X, 2) + Math.Pow(a.Y, 2));
+        }
+
         /// <summary>
         /// Check if sections, formed by Point a, Point b and Point c, Point d respectively, intersect 
         /// </summary>
@@ -451,5 +461,32 @@ namespace Lunoxod_2d
             }
             return answer;
         }
+
+        /// <summary>
+        /// Return point of isosceles triangle by base and length of side
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="side"></param>
+        /// <returns></returns>
+        public Point getPointIsoscelesByBaseSide(Point a, Point b, double side, bool up)
+        {
+            Point avg = (a + b) / 2;
+            List<double> coefs = getLineCoefs(a, b);
+            double l = Math.Sqrt(side * side - distance(a, b) * distance(a, b) / 4);
+            Point norm_vector = new Point(coefs[0], coefs[1]);
+            if (coefs[1] > 0 ^ up)
+            {
+                norm_vector *= -1;
+            }
+            Point result = avg + norm_vector * l / norm(norm_vector);
+            return result;
+        }
+
+        //public List<Point> setCenterOfSuspension()
+        //{
+        //    List<Point> result = new List<Point>();
+        //
+        //}
     }
 }

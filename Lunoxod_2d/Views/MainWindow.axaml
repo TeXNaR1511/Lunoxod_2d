@@ -127,15 +127,26 @@
 								  Canvas.Top="{Binding Lunoxod.SurfaceInitY}"
 						/>
 
-						<Polyline Points="{Binding Lunoxod.Body}" 
-								  Stroke="Blue" 
+						<Polyline Points="{Binding Lunoxod.FirstSuspension}"
+								  Stroke="Blue"
 								  StrokeThickness="7"
-								  Canvas.Left="0" 
+								  Canvas.Left="0"
 								  Canvas.Top="0"
-						/>
+								  IsVisible="{Binding Lunoxod.NormalModel}">
+						</Polyline>
 
-						<!--<Path Fill="Orange" Data="M 0,0 c 0,0 50,0 50,-50 c 0,0 50,0 50,50 h -50 v 50 l -50,-50 Z" Canvas.Left="30" Canvas.Top="250"/>-->
-
+						<Polyline Points="{Binding Lunoxod.Body}"
+								  Stroke="Blue"
+								  StrokeThickness="7"
+								  Canvas.Left="0"
+								  Canvas.Top="0">
+							<Polyline.IsVisible>
+								<MultiBinding Converter="{x:Static BoolConverters.Or}">
+									<Binding Path="Lunoxod.SimplestModel"/>
+									<Binding Path="Lunoxod.SimpleModel"/>
+								</MultiBinding>
+							</Polyline.IsVisible>
+						</Polyline>
 
 						<Ellipse Stroke="Magenta"
 								 StrokeThickness="3"
@@ -153,6 +164,9 @@
 								 Canvas.Left="{Binding Lunoxod.SecondWheelX}" 
 								 Canvas.Top="{Binding Lunoxod.SecondWheelY}"
 						/>
+
+						
+						
 					</Canvas>
 				</Canvas>
 			</Border>
@@ -197,8 +211,7 @@
 						Grid.Column="0" 
 						Grid.Row="2" 
 						Margin="2"/>
-				<ComboBox DockPanel.Dock="Top" 
-						  SelectedIndex="{Binding Lunoxod.IndexRoverModel, Mode=TwoWay}" 
+				<ComboBox SelectedIndex="{Binding Lunoxod.IndexRoverModel, Mode=TwoWay}" 
 						  HorizontalAlignment="Stretch"
 						  VerticalAlignment="Stretch"
 						  Grid.Column="1"
@@ -302,6 +315,19 @@
 						 Grid.Row="7"
 						 Margin="2"
 						 IsVisible="{Binding Lunoxod.SimpleModel}"/>
+				<TextBlock Text="Suspension Length"
+						   VerticalAlignment="Center"
+						   HorizontalAlignment="Center"
+						   Grid.Row="6"
+						   IsVisible="{Binding Lunoxod.NormalModel}"/>
+				<TextBox Text="{Binding Lunoxod.SuspensionLength}"
+						 VerticalContentAlignment="Center"
+						 HorizontalContentAlignment="Center"
+						 VerticalAlignment="Stretch"
+						 HorizontalAlignment="Stretch"
+						 Grid.Row="7"
+						 Margin="2"
+						 IsVisible="{Binding Lunoxod.NormalModel}"/>
 				<Button Command="{Binding Lunoxod.resetParameters}" 
 						VerticalContentAlignment="Center" 
 						HorizontalContentAlignment="Center" 

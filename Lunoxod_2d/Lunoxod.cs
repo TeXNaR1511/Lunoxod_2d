@@ -221,6 +221,31 @@ namespace Lunoxod_2d
             set => this.RaiseAndSetIfChanged(ref backButtonPressed, value);
         }
 
+        private List<Point> firstSuspension = new List<Point>();
+
+        public List<Point> FirstSuspension
+        {
+            get => firstSuspension;
+            set => this.RaiseAndSetIfChanged(ref firstSuspension, value);
+        }
+
+        private Point firstSuspensionCenter = new Point(0, 0);
+
+        public Point FirstSuspensionCenter
+        {
+            get => firstSuspensionCenter;
+            set => this.RaiseAndSetIfChanged(ref firstSuspensionCenter, value);
+        }
+
+        private double suspensionLength = 100.0;
+
+        public double SuspensionLength
+        {
+            get => suspensionLength;
+            set => this.RaiseAndSetIfChanged(ref suspensionLength, value);
+        }
+
+        
         
 
         //Constructors
@@ -231,6 +256,15 @@ namespace Lunoxod_2d
             coordinates = "0,0 0,0";
             SurfaceUnderWheel = createListOfPointsFromString(coordinates);
             initDistimerTick();
+            //System.Diagnostics.Debug.WriteLine("FirstSuspension");
+            //for (int i = 0; i < FirstSuspension.Count; i++)
+            //{
+            //    System.Diagnostics.Debug.WriteLine(FirstSuspension[i]);
+            //}
+            //for (int i = 0; i < Body.Count; i++)
+            //{
+            //    System.Diagnostics.Debug.WriteLine(Body[i]);
+            //}
             distimer.Tick += (s, e) =>
             {
                 distimerTick();
@@ -252,6 +286,15 @@ namespace Lunoxod_2d
 
             //System.Diagnostics.Debug.WriteLine(SurfaceInitY);
             initDistimerTick();
+            //System.Diagnostics.Debug.WriteLine("FirstSuspension");
+            //for (int i = 0; i < FirstSuspension.Count; i++)
+            //{
+            //    System.Diagnostics.Debug.WriteLine(FirstSuspension[i]);
+            //}
+            //for (int i = 0; i < Body.Count; i++)
+            //{
+            //    System.Diagnostics.Debug.WriteLine(Body[i]);
+            //}
             //TimerCallback tm = new TimerCallback(setElapsedTime);
             //Timer timer = new Timer(tm, null, 0, 100);
             //distimer = new DispatcherTimer() { Interval = new TimeSpan() };
@@ -383,6 +426,7 @@ namespace Lunoxod_2d
             Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel);
             //System.Diagnostics.Debug.WriteLine(Wheel.getXYAtDistanceFromPoint(new Point(0, 0), 100, Wheel.getCenterOfWheel(), true));
 
+           
             Point a = new Point(0, 0);
             Point b = new Point(0, 0);
 
@@ -395,6 +439,8 @@ namespace Lunoxod_2d
                 SecondWheelX = SecondWheelInit - RadiusWheel;
                 SecondWheelY = Wheel.getYOfCenterByX(SecondWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
                 a = new Point(SecondWheelX + RadiusWheel, SecondWheelY + RadiusWheel);
+
+                
             }
 
             if (SimpleModel)
@@ -418,11 +464,20 @@ namespace Lunoxod_2d
                 //a = v;
                 //FirstWheelX = v.X - RadiusWheel;
                 //FirstWheelY = v.Y - RadiusWheel;
+
             }
 
             if (NormalModel)
             {
+                FirstWheelX = FirstWheelInit - RadiusWheel;
+                FirstWheelY = Wheel.getYOfCenterByX(FirstWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
+                b = new Point(FirstWheelX + RadiusWheel, FirstWheelY + RadiusWheel);
 
+                Point v = Wheel.getXYAtDistanceFromPoint(b, RoverBodyLength, Wheel.getCenterOfWheel(), true);
+                a = v;
+                SecondWheelX = v.X - RadiusWheel;
+                SecondWheelY = v.Y - RadiusWheel;
+                //Body = new List<Point> { a, b };
             }
 
             Body = new List<Point> { a, b };
@@ -431,6 +486,9 @@ namespace Lunoxod_2d
 
             Warning = check ? "Danger" : "Safe";
             ColorWarning = check ? "Red" : "Green";
+
+            FirstSuspensionCenter = Wheel.getPointIsoscelesByBaseSide(a, b, SuspensionLength, true);
+            FirstSuspension = new List<Point> { a, FirstSuspensionCenter, b };
         }
 
         public void distimerTick()
@@ -465,6 +523,13 @@ namespace Lunoxod_2d
                 }
                 SecondWheelY = Wheel.getYOfCenterByX(SecondWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
                 a = new Point(SecondWheelX + RadiusWheel, SecondWheelY + RadiusWheel);
+
+                Body = new List<Point> { a, b };
+
+                bool check = checkIfCollisionInevitable(a, b, surfaceUnderWheel);
+
+                Warning = check ? "Danger" : "Safe";
+                ColorWarning = check ? "Red" : "Green";
             }
 
             if (SimpleModel)
@@ -495,19 +560,47 @@ namespace Lunoxod_2d
                 //a = v;
                 //FirstWheelX = v.X - RadiusWheel;
                 //FirstWheelY = v.Y - RadiusWheel;
+
+                Body = new List<Point> { a, b };
+
+                bool check = checkIfCollisionInevitable(a, b, surfaceUnderWheel);
+
+                Warning = check ? "Danger" : "Safe";
+                ColorWarning = check ? "Red" : "Green";
             }
 
             if (NormalModel)
             {
+                if (StartButtonPressed)
+                {
+                    FirstWheelX += velocityWheel;
+                }
+                if (BackButtonPressed)
+                {
+                    FirstWheelX -= velocityWheel;
+                }
+                FirstWheelY = Wheel.getYOfCenterByX(FirstWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
+                b = new Point(FirstWheelX + RadiusWheel, FirstWheelY + RadiusWheel);
+
+                Point v = Wheel.getXYAtDistanceFromPoint(b, RoverBodyLength, Wheel.getCenterOfWheel(), true);
+                a = v;
+                
+                SecondWheelX = v.X - RadiusWheel;
+                SecondWheelY = v.Y - RadiusWheel;
+                //Body = new List<Point> { a, b };
+                //FirstSuspensionCenter = Wheel.getPointIsoscelesByBaseSide(a, b, 100, true);
+                //System.Diagnostics.Debug.WriteLine(a);
+                //System.Diagnostics.Debug.WriteLine(b);
+                //System.Diagnostics.Debug.WriteLine(FirstSuspensionCenter);
+                //FirstSuspension = new List<Point> { a, FirstSuspensionCenter, b };
+
+                FirstSuspensionCenter = Wheel.getPointIsoscelesByBaseSide(a, b, SuspensionLength, true);
+                System.Diagnostics.Debug.WriteLine(FirstSuspensionCenter);
+                FirstSuspension = new List<Point> { a, FirstSuspensionCenter, b };
 
             }
 
-            Body = new List<Point> { a, b };
-
-            bool check = checkIfCollisionInevitable(a, b, surfaceUnderWheel);
-
-            Warning = check ? "Danger" : "Safe";
-            ColorWarning = check ? "Red" : "Green";
+            
         }
 
         public double getMaxYOnSurface(string coordinates)
@@ -559,6 +652,7 @@ namespace Lunoxod_2d
             get => indexRoverModel;
             set
             {
+                //initDistimerTick();
                 if (value == "0")
                 {
                     SimplestModel = true;

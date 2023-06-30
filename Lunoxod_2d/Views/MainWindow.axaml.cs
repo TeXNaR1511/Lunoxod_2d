@@ -19,12 +19,15 @@ namespace Lunoxod_2d.Views
 
         private Avalonia.Point previousPosition = new Avalonia.Point(0, 0);
 
+        MainWindowViewModel viewModel { get => this.DataContext as MainWindowViewModel; }
+
         public MainWindow()
         {
             InitializeComponent();
             Logger.TryGet(LogEventLevel.Fatal, LogArea.Control)?.Log(this, "Avalonia Infrastructure");
             System.Diagnostics.Debug.WriteLine("System Diagnostics Debug");
             this.WindowState = WindowState.Maximized;
+            //System.Diagnostics.Debug.WriteLine(viewModel);
         }
 
         public void closeApp()
@@ -32,7 +35,7 @@ namespace Lunoxod_2d.Views
             Close();
         }
 
-        MainWindowViewModel viewModel { get => this.DataContext as MainWindowViewModel; }
+        
 
         public void OnPointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
@@ -135,7 +138,7 @@ namespace Lunoxod_2d.Views
             //System.Diagnostics.Debug.WriteLine(e.Pointer);
             //System.Diagnostics.Debug.WriteLine(e.GetPosition(this));
             Avalonia.Point tempPosition = e.GetPosition(this);
-            System.Diagnostics.Debug.WriteLine(tempPosition);
+            //System.Diagnostics.Debug.WriteLine(tempPosition);
             if (mouseWheelPressed)
             {
                 //Avalonia.Point tempPosition = e.GetPosition(this);

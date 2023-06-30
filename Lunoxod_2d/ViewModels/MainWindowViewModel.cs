@@ -50,7 +50,7 @@ namespace Lunoxod_2d.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref userName, value);
-                System.Diagnostics.Debug.WriteLine(value);
+                //System.Diagnostics.Debug.WriteLine(value);
             }
         }
 
@@ -153,7 +153,7 @@ namespace Lunoxod_2d.ViewModels
             result = await dialog.ShowAsync(new Window());
             if (result != null)
             {
-                System.Diagnostics.Debug.WriteLine(File.ReadAllText(result.First()));
+                //System.Diagnostics.Debug.WriteLine(File.ReadAllText(result.First()));
                 coordsFromFile = File.ReadAllText(result.First());
             }
         }
