@@ -243,7 +243,7 @@ namespace Lunoxod_2d
             set => this.RaiseAndSetIfChanged(ref firstSuspension, value);
         }
 
-        private Point firstSuspensionCenter = new Point(0, 0);
+        private Point firstSuspensionCenter = new Point();
 
         public Point FirstSuspensionCenter
         {
@@ -259,8 +259,63 @@ namespace Lunoxod_2d
             set => this.RaiseAndSetIfChanged(ref suspensionLength, value);
         }
 
-        
-        
+        private double thirdWheelX;
+
+        public double ThirdWheelX
+        {
+            get => thirdWheelX;
+            set => this.RaiseAndSetIfChanged(ref thirdWheelX, value);
+        }
+
+        private double thirdWheelY;
+
+        public double ThirdWheelY
+        {
+            get => thirdWheelY;
+            set => this.RaiseAndSetIfChanged(ref thirdWheelY, value);
+        }
+
+        private double fourthWheelX;
+
+        public double FourthWheelX
+        {
+            get => fourthWheelX;
+            set => this.RaiseAndSetIfChanged(ref fourthWheelX, value);
+        }
+
+        private double fourthWheelY;
+
+        public double FourthWheelY
+        {
+            get => fourthWheelY;
+            set => this.RaiseAndSetIfChanged(ref fourthWheelY, value);
+        }
+
+        private double distanceBetweenSuspensions = 300;
+
+        public double DistanceBetweenSuspensions
+        {
+            get => distanceBetweenSuspensions;
+            set => this.RaiseAndSetIfChanged(ref distanceBetweenSuspensions, value);
+        }
+
+        private List<Point> secondSuspension = new List<Point>();
+
+        public List<Point> SecondSuspension
+        {
+            get => secondSuspension;
+            set => this.RaiseAndSetIfChanged(ref secondSuspension, value);
+        }
+
+        private Point secondSuspensionCenter = new Point();
+
+        public Point SecondSuspensionCenter
+        {
+            get => secondSuspensionCenter;
+            set => this.RaiseAndSetIfChanged(ref secondSuspensionCenter, value);
+        }
+
+
 
         //Constructors
 
@@ -270,6 +325,8 @@ namespace Lunoxod_2d
             coordinates = "0,0 0,0";
             SurfaceUnderWheel = createListOfPointsFromString(coordinates);
             initDistimerTick();
+
+            //Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel, RoverBodyLength, SuspensionLength);
             //System.Diagnostics.Debug.WriteLine("FirstSuspension");
             //for (int i = 0; i < FirstSuspension.Count; i++)
             //{
@@ -300,6 +357,8 @@ namespace Lunoxod_2d
 
             //System.Diagnostics.Debug.WriteLine(SurfaceInitY);
             initDistimerTick();
+
+            //Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel, RoverBodyLength, SuspensionLength);
             //System.Diagnostics.Debug.WriteLine("FirstSuspension");
             //for (int i = 0; i < FirstSuspension.Count; i++)
             //{
@@ -437,12 +496,14 @@ namespace Lunoxod_2d
         {
             ElapsedTime = timer.Elapsed;
 
-            Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel);
+            Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel, RoverBodyLength, SuspensionLength);
             //System.Diagnostics.Debug.WriteLine(Wheel.getXYAtDistanceFromPoint(new Point(0, 0), 100, Wheel.getCenterOfWheel(), true));
 
            
             Point a = new Point(0, 0);
             Point b = new Point(0, 0);
+
+            bool check = true;
 
             if (SimplestModel)
             {
@@ -454,7 +515,9 @@ namespace Lunoxod_2d
                 SecondWheelY = Wheel.getYOfCenterByX(SecondWheelX + RadiusWheel, Wheel.getCenterOfWheel()) - RadiusWheel;
                 a = new Point(SecondWheelX + RadiusWheel, SecondWheelY + RadiusWheel);
 
-                
+                Body = new List<Point> { a, b };
+
+                check = checkIfCollisionInevitable(a, b, surfaceUnderWheel);
             }
 
             if (SimpleModel)
@@ -479,6 +542,10 @@ namespace Lunoxod_2d
                 //FirstWheelX = v.X - RadiusWheel;
                 //FirstWheelY = v.Y - RadiusWheel;
 
+                Body = new List<Point> { a, b };
+
+                check = checkIfCollisionInevitable(a, b, surfaceUnderWheel);
+
             }
 
             if (NormalModel)
@@ -492,27 +559,42 @@ namespace Lunoxod_2d
                 SecondWheelX = v.X - RadiusWheel;
                 SecondWheelY = v.Y - RadiusWheel;
                 //Body = new List<Point> { a, b };
+
+                FirstSuspensionCenter = Wheel.getPointIsoscelesByBaseSide(a, b, SuspensionLength, true);
+                FirstSuspension = new List<Point> { a, FirstSuspensionCenter, b };
+
+                List<Point> secsus = Wheel.findCenterOfSuspensionAtDistance(FirstSuspensionCenter, Wheel.getCenterOfSuspension(), DistanceBetweenSuspensions, SuspensionLength, RoverBodyLength);
+
+                ThirdWheelX = secsus[0].X - RadiusWheel;
+                ThirdWheelY = secsus[0].Y - RadiusWheel;
+
+                FourthWheelX = secsus[1].X - RadiusWheel;
+                FourthWheelY = secsus[1].Y - RadiusWheel;
+
+                SecondSuspensionCenter = secsus[2];
+                SecondSuspension = new List<Point> { secsus[1], secsus[2], secsus[0] };
+
+                Body = new List<Point> { FirstSuspensionCenter, SecondSuspensionCenter };
+
+                check = checkIfCollisionInevitable(FirstSuspensionCenter, SecondSuspensionCenter, surfaceUnderWheel);
             }
 
-            Body = new List<Point> { a, b };
-
-            bool check = checkIfCollisionInevitable(a, b, surfaceUnderWheel);
+            
 
             Warning = check ? "Danger" : "Safe";
             ColorWarning = check ? "Red" : "Green";
-
-            FirstSuspensionCenter = Wheel.getPointIsoscelesByBaseSide(a, b, SuspensionLength, true);
-            FirstSuspension = new List<Point> { a, FirstSuspensionCenter, b };
         }
 
         public void distimerTick()
         {
             ElapsedTime = timer.Elapsed;
 
-            Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel);
+            //Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel, RoverBodyLength, SuspensionLength);
 
             Point a = new Point(0, 0);
             Point b = new Point(0, 0);
+
+            bool check = true;
 
             if (SimplestModel)
             {
@@ -540,10 +622,9 @@ namespace Lunoxod_2d
 
                 Body = new List<Point> { a, b };
 
-                bool check = checkIfCollisionInevitable(a, b, surfaceUnderWheel);
+                check = checkIfCollisionInevitable(a, b, surfaceUnderWheel);
 
-                Warning = check ? "Danger" : "Safe";
-                ColorWarning = check ? "Red" : "Green";
+               
             }
 
             if (SimpleModel)
@@ -577,10 +658,9 @@ namespace Lunoxod_2d
 
                 Body = new List<Point> { a, b };
 
-                bool check = checkIfCollisionInevitable(a, b, surfaceUnderWheel);
+                check = checkIfCollisionInevitable(a, b, surfaceUnderWheel);
 
-                Warning = check ? "Danger" : "Safe";
-                ColorWarning = check ? "Red" : "Green";
+                
             }
 
             if (NormalModel)
@@ -612,9 +692,26 @@ namespace Lunoxod_2d
                 System.Diagnostics.Debug.WriteLine(FirstSuspensionCenter);
                 FirstSuspension = new List<Point> { a, FirstSuspensionCenter, b };
 
+                List<Point> secsus = Wheel.findCenterOfSuspensionAtDistance(FirstSuspensionCenter, Wheel.getCenterOfSuspension(), DistanceBetweenSuspensions, SuspensionLength, RoverBodyLength);
+
+                ThirdWheelX = secsus[0].X - RadiusWheel;
+                ThirdWheelY = secsus[0].Y - RadiusWheel;
+
+                FourthWheelX = secsus[1].X - RadiusWheel;
+                FourthWheelY = secsus[1].Y - RadiusWheel;
+
+                SecondSuspensionCenter = secsus[2];
+                SecondSuspension = new List<Point> { secsus[1], secsus[2], secsus[0] };
+
+                Body = new List<Point> { FirstSuspensionCenter, SecondSuspensionCenter };
+
+                check = checkIfCollisionInevitable(FirstSuspensionCenter, SecondSuspensionCenter, surfaceUnderWheel);
+
             }
 
-            
+            Warning = check ? "Danger" : "Safe";
+            ColorWarning = check ? "Red" : "Green";
+
         }
 
         public double getMaxYOnSurface(string coordinates)
@@ -660,6 +757,7 @@ namespace Lunoxod_2d
             FirstWheelInit = 100.0;
             SecondWheelInit = 0.0;
             RoverBodyLength = 100.0;
+            //Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel, RoverBodyLength, SuspensionLength);
         }
 
         private string indexRoverModel = "0";

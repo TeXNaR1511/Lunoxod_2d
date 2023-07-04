@@ -128,8 +128,16 @@
 						/>
 
 						<Polyline Points="{Binding Lunoxod.FirstSuspension}"
-								  Stroke="Blue"
-								  StrokeThickness="7"
+								  Stroke="Green"
+								  StrokeThickness="3"
+								  Canvas.Left="0"
+								  Canvas.Top="0"
+								  IsVisible="{Binding Lunoxod.NormalModel}">
+						</Polyline>
+
+						<Polyline Points="{Binding Lunoxod.SecondSuspension}"
+								  Stroke="Green"
+								  StrokeThickness="3"
 								  Canvas.Left="0"
 								  Canvas.Top="0"
 								  IsVisible="{Binding Lunoxod.NormalModel}">
@@ -137,13 +145,14 @@
 
 						<Polyline Points="{Binding Lunoxod.Body}"
 								  Stroke="Blue"
-								  StrokeThickness="7"
+								  StrokeThickness="3"
 								  Canvas.Left="0"
 								  Canvas.Top="0">
 							<Polyline.IsVisible>
 								<MultiBinding Converter="{x:Static BoolConverters.Or}">
 									<Binding Path="Lunoxod.SimplestModel"/>
 									<Binding Path="Lunoxod.SimpleModel"/>
+									<Binding Path="Lunoxod.NormalModel"/>
 								</MultiBinding>
 							</Polyline.IsVisible>
 						</Polyline>
@@ -157,12 +166,30 @@
 						/>
 							
 
-						<Ellipse Stroke="Red" 
+						<Ellipse Stroke="Magenta" 
 								 StrokeThickness="3" 
 								 Width="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}" 
 								 Height="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}"
 								 Canvas.Left="{Binding Lunoxod.SecondWheelX}" 
 								 Canvas.Top="{Binding Lunoxod.SecondWheelY}"
+						/>
+
+						<Ellipse Stroke="Magenta"
+								 StrokeThickness="3"
+								 Width="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}"
+								 Height="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}"
+								 Canvas.Left="{Binding Lunoxod.ThirdWheelX}"
+								 Canvas.Top="{Binding Lunoxod.ThirdWheelY}"
+								 IsVisible="{Binding Lunoxod.NormalModel}"
+						/>
+
+						<Ellipse Stroke="Magenta"
+								 StrokeThickness="3"
+								 Width="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}"
+								 Height="{Binding Lunoxod.RadiusWheel, Converter={StaticResource myConverter}, ConverterParameter=0|2|0|0|0|0|0}"
+								 Canvas.Left="{Binding Lunoxod.FourthWheelX}"
+								 Canvas.Top="{Binding Lunoxod.FourthWheelY}"
+								 IsVisible="{Binding Lunoxod.NormalModel}"
 						/>
 
 						

@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using MathNet.Numerics;
 using MathNet.Numerics.LinearAlgebra;
 using Avalonia.Media;
+using System.Runtime.ExceptionServices;
+using Avalonia.Controls.Templates;
 
 namespace Lunoxod_2d
 {
@@ -23,7 +25,11 @@ namespace Lunoxod_2d
         /// </summary>
         private double radius = 20.0;
 
-        private double xtick = 0.01;
+        /// <summary>
+        /// tick for numerical methods
+        /// </summary>
+        private double tickNumMeth = 0.1;
+
         /// <summary>
         /// Polyline defining surface
         /// </summary>
@@ -37,7 +43,11 @@ namespace Lunoxod_2d
         /// <summary>
         /// Curve defining position of center of suspension
         /// </summary>
-        private List<Point> centerOfSuspension = new List<Point>();
+        private List<List<Point>> centerOfSuspension = new List<List<Point>>();
+
+        private double distanceBetweenWheels = 100.0;
+
+        private double lengthOfSuspension = 100.0;
 
         //Constructors
 
@@ -45,6 +55,7 @@ namespace Lunoxod_2d
         {
             System.Diagnostics.Debug.WriteLine("Empty Constructor");
             centerOfWheel = setCenterOfWheel(surface);
+            centerOfSuspension = setCenterOfSuspension(tickNumMeth, surface[0].X, surface[surface.Count - 1].X, radius, distanceBetweenWheels, lengthOfSuspension);
             //List<Point> ter = getIntersectionEllipseEllipse(new Point(0, 0), 1, new Point(1, 1), 1);
             //for (int i = 0; i < ter.Count; i++)
             //{
@@ -55,12 +66,15 @@ namespace Lunoxod_2d
         {
             this.surface = surface;
             centerOfWheel = setCenterOfWheel(surface);
+            centerOfSuspension = setCenterOfSuspension(tickNumMeth, surface[0].X, surface[surface.Count - 1].X, radius, distanceBetweenWheels, lengthOfSuspension);
         }
 
-        public Wheel(List<Point> surface, double radius)
+        public Wheel(List<Point> surface, double radius, double distanceBetweenWheels, double lengthOfSuspension)
         {
             this.surface = surface;
             this.radius = radius;
+            this.distanceBetweenWheels = distanceBetweenWheels;
+            this.lengthOfSuspension = lengthOfSuspension;
             //System.Diagnostics.Debug.WriteLine(checkIfPointLowerThanLine(new Point(2, 2), new Point(1, 2), new Point(3, 5)));
             //System.Diagnostics.Debug.WriteLine(checkIfPointLowerThanLine(new Point(2, 4), new Point(1, 2), new Point(3, 5)));
             //System.Diagnostics.Debug.WriteLine(getPointAtDistanceFromLineAbove(new Point(0, 0.5), new Point(1, 2), new Point(3, 5), 3));
@@ -76,7 +90,8 @@ namespace Lunoxod_2d
             //System.Diagnostics.Debug.WriteLine(HasValue(x[1]));
             //System.Diagnostics.Debug.WriteLine(getIntersectionOfTwoLines(new List<double>() { 3, -2, 1 }, new List<double>() { 3, -2, 1 }));
             centerOfWheel = setCenterOfWheel(surface);
-            
+            centerOfSuspension = setCenterOfSuspension(tickNumMeth, surface[0].X, surface[surface.Count - 1].X, radius, distanceBetweenWheels, lengthOfSuspension);
+
             //System.Diagnostics.Debug.WriteLine(FindRoots.Quadratic(1, 1, 1).Item1.Real);
             //print surface and centerOfWheel
             //for (int i = 0; i < surface.Count; i++)
@@ -539,10 +554,83 @@ namespace Lunoxod_2d
             return result;
         }
 
-        //public List<Point> setCenterOfSuspension()
-        //{
-        //    List<Point> result = new List<Point>();
-        //
-        //}
+        /// <summary>
+        /// Returns base of isosceles triangle by one point
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="side"></param>
+        /// <param name="distance"></param>
+        /// <param name="up"></param>
+        /// <returns></returns>
+        public List<Point> getCentersOfWheelsFromCenterOfSuspension(Point a, double side, double distance, bool down)
+        {
+            double k = Math.Sqrt(side * side - distance * distance / 4);
+            double b_prime = down ? a.Y - k : a.Y + k;
+
+            return new List<Point> { new Point(a.X + distance / 2, b_prime), new Point(a.X - distance / 2, b_prime) };
+        }
+
+        /// <summary>
+        /// Returns center of suspension
+        /// </summary>
+        /// <param name="tick"></param>
+        /// <param name="x_min"></param>
+        /// <param name="x_max"></param>
+        /// <param name="radius"></param>
+        /// <param name="distanceWheels"></param>
+        /// <param name="suspensionLength"></param>
+        /// <returns></returns>
+        public List<List<Point>> setCenterOfSuspension(double tick, double x_min, double x_max, double radius, double distanceWheels, double suspensionLength)
+        {
+            List<List<Point>> result = new List<List<Point>>();
+            double x = x_min;
+            while (x < x_max)
+            {
+                Point FirstCenter = new Point(x + radius, getYOfCenterByX(x + radius, centerOfWheel));
+                Point SecondCenter = getXYAtDistanceFromPoint(FirstCenter, distanceWheels, centerOfWheel, true);
+                Point ThirdCenter = getPointIsoscelesByBaseSide(FirstCenter, SecondCenter, suspensionLength, true);
+                result.Add(new List<Point> { FirstCenter, SecondCenter, ThirdCenter });
+                x += tick;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Returns center of suspension
+        /// </summary>
+        /// <returns></returns>
+        public List<List<Point>> getCenterOfSuspension()
+        {
+            return centerOfSuspension;
+        }
+
+        /// <summary>
+        /// Returns Point on center of suspension at distance d from known Point a
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="center"></param>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public List<Point> findCenterOfSuspensionAtDistance(Point a, List<List<Point>> center, double d, double side, double wheelDist)
+        {
+            List<Point> result = new List<Point> ();
+            for (int i = 0; i < center.Count; i++)
+            {
+                if (Math.Abs(distance(a, center[i][2]) - d) < 1 && a.X > center[i][2].X)
+                {
+                    result = center[i];
+                    break;
+                }
+            }
+            if (result.Count == 0)
+            {
+                var p = new Point(a.X - d, a.Y);
+                var l = getCentersOfWheelsFromCenterOfSuspension(p, side, wheelDist, true);
+                result.Add(l[0]);
+                result.Add(l[1]);
+                result.Add(p);
+            }
+            return result;
+        }
     }
 }
