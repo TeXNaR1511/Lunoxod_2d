@@ -13,16 +13,30 @@ namespace Lunoxod_2d
 {
     public class Wheel : ViewModelBase
     {
+        /// <summary>
+        /// Precision of calculations
+        /// </summary>
         private double epsilon = 1e-10;
 
+        /// <summary>
+        /// Radius of wheel
+        /// </summary>
         private double radius = 20.0;
 
         private double xtick = 0.01;
-        
+        /// <summary>
+        /// Polyline defining surface
+        /// </summary>
         private List<Point> surface = new List<Point> { new Point(0, 0), new Point(10, 0)};
 
+        /// <summary>
+        /// Curve consists of arcs and segments defining surface
+        /// </summary>
         private List<List<Point>> centerOfWheel = new List<List<Point>>();
-
+        
+        /// <summary>
+        /// Curve defining position of center of suspension
+        /// </summary>
         private List<Point> centerOfSuspension = new List<Point>();
 
         //Constructors
@@ -266,11 +280,24 @@ namespace Lunoxod_2d
             return centerOfWheel;
         }
 
+
+        /// <summary>
+        /// Returns euclidean distance between two points
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public double distance(Point a, Point b)
         {
             return Math.Sqrt(Math.Pow(b.X - a.X, 2) + Math.Pow(b.Y - a.Y, 2));
         }
 
+
+        /// <summary>
+        /// Returns euclidean norm of Point
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public double norm(Point a)
         {
             return Math.Sqrt(Math.Pow(a.X, 2) + Math.Pow(a.Y, 2));
@@ -298,6 +325,14 @@ namespace Lunoxod_2d
             else return false;
         }
 
+        /// <summary>
+        /// Return intersection of line defining by Point a and Point b and circle with center in Point o and radius is r
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="r"></param>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public List<Point> getIntersectionLineEllipse(Point o, double r, Point a, Point b)
         {
             List<double> coefs = getLineCoefs(a, b);
@@ -329,6 +364,13 @@ namespace Lunoxod_2d
             }
         }
 
+        /// <summary>
+        /// Return intersection of line defining by coefficients coefs and circle with center in Point o and radius is r
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="r"></param>
+        /// <param name="coefs"></param>
+        /// <returns></returns>
         public List<Point> getIntersectionLineEllipse(Point o, double r, List<double> coefs)
         {
             double A = coefs[0];
@@ -359,11 +401,25 @@ namespace Lunoxod_2d
             }
         }
 
+        /// <summary>
+        /// Check if Point is on upper arc of circle that is y0 + sqrt(r ^ 2 - (x - x0) ^ 2)
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="o"></param>
+        /// <param name="r"></param>
+        /// <returns></returns>
         public bool checkIfPointOnUpperArc(Point p, Point o, double r)
         {
             return Math.Abs(p.Y - o.Y - Math.Sqrt(r * r - Math.Pow(p.X - o.X, 2))) < epsilon;
         }
-
+        /// <summary>
+        /// Return intersection of two circles with centers in o1 and o2, and with radiuses r1 and r2, respectively
+        /// </summary>
+        /// <param name="o1"></param>
+        /// <param name="r1"></param>
+        /// <param name="o2"></param>
+        /// <param name="r2"></param>
+        /// <returns></returns>
         public List<Point> getIntersectionEllipseEllipse(Point o1, double r1, Point o2, double r2)
         {
             if (o1.X == o2.X && o1.Y == o2.Y)

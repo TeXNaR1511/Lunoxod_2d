@@ -19,9 +19,11 @@ namespace Lunoxod_2d
 {
     public class Lunoxod : ViewModelBase
     {
-
         private bool simplestModel = true;
 
+        /// <summary>
+        /// Flag for Simplest Rover Model
+        /// </summary>
         public bool SimplestModel
         {
             get => simplestModel;
@@ -30,6 +32,9 @@ namespace Lunoxod_2d
 
         private bool simpleModel = false;
 
+        /// <summary>
+        /// Flag for Simple Rover Model
+        /// </summary>
         public bool SimpleModel
         {
             get => simpleModel;
@@ -38,15 +43,21 @@ namespace Lunoxod_2d
 
         private bool normalModel = false;
 
+        /// <summary>
+        /// Flag for Normal Rover Model
+        /// </summary>
         public bool NormalModel
         {
             get => normalModel;
             set => this.RaiseAndSetIfChanged(ref normalModel, value);
         }
 
-
+        
         private double velocityWheel = 1.0;
-
+        
+        /// <summary>
+        /// Velocity of first wheel
+        /// </summary>
         public double VelocityWheel
         {
             get => velocityWheel; 
@@ -73,6 +84,9 @@ namespace Lunoxod_2d
             set => this.RaiseAndSetIfChanged(ref elapsedTime, value);
         }
 
+        /// <summary>
+        /// Dispatcher timer for move wheel once Interval
+        /// </summary>
         DispatcherTimer distimer = new DispatcherTimer() { Interval = new TimeSpan() };
 
         private string startButtonName = "Start";
@@ -636,6 +650,9 @@ namespace Lunoxod_2d
             return false;
         }
 
+        /// <summary>
+        /// Resets rover parameters
+        /// </summary>
         public void resetParameters()
         {
             VelocityWheel = 1.0;

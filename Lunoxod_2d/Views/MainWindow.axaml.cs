@@ -36,7 +36,11 @@ namespace Lunoxod_2d.Views
         }
 
         
-
+        /// <summary>
+        /// Event that zooms 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void OnPointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
             //var viewModel = this.DataContext as MainWindowViewModel;
@@ -104,6 +108,11 @@ namespace Lunoxod_2d.Views
             base.OnPointerWheelChanged(e);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void OnPointerPressed(object sender, PointerPressedEventArgs e)
         {
             //
@@ -130,6 +139,11 @@ namespace Lunoxod_2d.Views
             base.OnPointerReleased(e);
         }
 
+        /// <summary>
+        /// Event that drags
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void OnPointerMoved(object sender, PointerEventArgs e)
         {
             //System.Diagnostics.Debug.WriteLine("mouse move");

@@ -144,6 +144,10 @@ namespace Lunoxod_2d.ViewModels
 
         private string coordsFromFile = "";
 
+        /// <summary>
+        /// Choice surface from file
+        /// </summary>
+        /// <returns></returns>
         public async Task Open()
         {
             var dialog = new OpenFileDialog();
