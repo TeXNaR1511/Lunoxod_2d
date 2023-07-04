@@ -282,6 +282,8 @@
 					<RowDefinition Height="*"/>
 					<RowDefinition Height="*"/>
 					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 				<TextBlock Text="Velocity" 
 						   VerticalAlignment="Center" 
@@ -355,13 +357,26 @@
 						 Grid.Row="7"
 						 Margin="2"
 						 IsVisible="{Binding Lunoxod.NormalModel}"/>
+				<TextBlock Text="Distance between suspensions"
+						   VerticalAlignment="Center"
+						   HorizontalAlignment="Center"
+						   Grid.Row="8"
+						   IsVisible="{Binding Lunoxod.NormalModel}"/>
+				<TextBox Text="{Binding Lunoxod.DistanceBetweenSuspensions}"
+						 VerticalContentAlignment="Center"
+						 HorizontalContentAlignment="Center"
+						 VerticalAlignment="Stretch"
+						 HorizontalAlignment="Stretch"
+						 Grid.Row="9"
+						 Margin="2"
+						 IsVisible="{Binding Lunoxod.NormalModel}"/>
 				<Button Command="{Binding Lunoxod.resetParameters}" 
 						VerticalContentAlignment="Center" 
 						HorizontalContentAlignment="Center" 
 						VerticalAlignment="Stretch" 
 						HorizontalAlignment="Stretch" 
 						Content="Reset Parameters" 
-						Grid.Row="8" 
+						Grid.Row="10" 
 						Margin="2"/>
 				<Button Content="Browse" 
 						Command="{Binding Open}" 
@@ -369,7 +384,7 @@
 						HorizontalContentAlignment="Center" 
 						VerticalAlignment="Stretch" 
 						HorizontalAlignment="Stretch" 
-						Grid.Row="9" 
+						Grid.Row="11" 
 						Margin="2"/>
 				<Button Content="Set Lunoxod" 
 						Command="{Binding setLunoxod}" 
@@ -377,7 +392,7 @@
 						HorizontalContentAlignment="Center" 
 						VerticalAlignment="Stretch" 
 						HorizontalAlignment="Stretch" 
-						Grid.Row="10" 
+						Grid.Row="12" 
 						Margin="2"/>
 			</Grid>
 			<Grid ShowGridLines="False" 

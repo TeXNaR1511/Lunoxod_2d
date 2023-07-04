@@ -31,14 +31,14 @@
   <Class Name="Lunoxod_2d.Wheel">
     <Position X="11.5" Y="1.25" Width="3.25" />
     <TypeIdentifier>
-      <HashCode>gAAAMAAAiAAIAAAAAAQCApAkBECAAAIAAAAAEAAACAE=</HashCode>
+      <HashCode>oAAAMgAAiAAIAAAAAAQCApAkBECAAQIAAAggFIAACAk=</HashCode>
       <FileName>Wheel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Lunoxod_2d.Lunoxod">
-    <Position X="8" Y="1.25" Width="2.5" />
+    <Position X="8" Y="1.25" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>SCSBA0AAQUIKMRACCCAhkFgNAYFQARUZwAhCHAgMgwE=</HashCode>
+      <HashCode>SCShC0AAYUIKMRECiCAhmFgNAYFwARUZ4AhCHAgMgwE=</HashCode>
       <FileName>Lunoxod.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

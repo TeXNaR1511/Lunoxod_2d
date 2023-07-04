@@ -19,6 +19,15 @@ namespace Lunoxod_2d
 {
     public class Lunoxod : ViewModelBase
     {
+
+        Wheel wheel = new Wheel();
+
+        Wheel Wheel
+        {
+            get => wheel;
+            set => this.RaiseAndSetIfChanged(ref wheel, value);
+        }
+
         private bool simplestModel = true;
 
         /// <summary>
@@ -71,7 +80,11 @@ namespace Lunoxod_2d
         public List<Point> SurfaceUnderWheel
         {
             get => surfaceUnderWheel;
-            set => this.RaiseAndSetIfChanged(ref surfaceUnderWheel, value);
+            set
+            {
+                //Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel, RoverBodyLength, SuspensionLength);
+                this.RaiseAndSetIfChanged(ref surfaceUnderWheel, value);
+            }
         }
 
         private Stopwatch timer = new Stopwatch();
@@ -105,20 +118,18 @@ namespace Lunoxod_2d
             set => this.RaiseAndSetIfChanged(ref backButtonName, value);
         }
 
-        Wheel wheel = new Wheel();
-
-        Wheel Wheel
-        {
-            get => wheel;
-            set => this.RaiseAndSetIfChanged(ref wheel, value);
-        }
+        
 
         private double radiusWheel = 30.0;
 
         public double RadiusWheel
         {
             get => radiusWheel;
-            set => this.RaiseAndSetIfChanged(ref radiusWheel, value);
+            set
+            {
+                //Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel, RoverBodyLength, SuspensionLength);
+                this.RaiseAndSetIfChanged(ref radiusWheel, value);
+            }
         }
 
         private double firstWheelX;
@@ -216,9 +227,13 @@ namespace Lunoxod_2d
         public double RoverBodyLength
         {
             get => roverBodyLength;
-            set => this.RaiseAndSetIfChanged(ref roverBodyLength, value);
+            set
+            {
+                //Wheel = new Wheel(SurfaceUnderWheel, RadiusWheel, RoverBodyLength, SuspensionLength);
+                this.RaiseAndSetIfChanged(ref roverBodyLength, value);
+            }
         }
-
+        
         private bool startButtonPressed = false;
 
         public bool StartButtonPressed
@@ -256,7 +271,11 @@ namespace Lunoxod_2d
         public double SuspensionLength
         {
             get => suspensionLength;
-            set => this.RaiseAndSetIfChanged(ref suspensionLength, value);
+            set
+            {
+                //Wheel = ew Wheel(SurfaceUnderWheel, RadiusWheel, RoverBodyLength, SuspensionLength);
+                this.RaiseAndSetIfChanged(ref suspensionLength, value);
+            }
         }
 
         private double thirdWheelX;
